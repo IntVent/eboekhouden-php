@@ -1,18 +1,17 @@
 {
-    "name": ":vendor_name/:package_name",
-    "description": ":package_description",
+    "name": "intvent/eboekhouden-php",
+    "description": "A PHP framework agnostic package for E-boekhouden.nl",
     "keywords": [
-        ":vendor_name",
-        ":package_name"
+        "intvent",
+        "eboekhouden-php"
     ],
-    "homepage": "https://github.com/spatie/:package_name",
+    "homepage": "https://github.com/spatie/eboekhouden-php",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
-            "homepage": "https://spatie.be",
-            "role": "Developer"
+            "name": "IntVent",
+            "email": "info@intvent.nl",
+            "homepage": "https://intvent.nl"
         }
     ],
     "require": {
@@ -25,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src"
+            "IntVent\\EBoekhouden\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Spatie\\Skeleton\\Tests\\": "tests"
+            "IntVent\\EBoekhouden\\Tests\\": "tests"
         }
     },
     "scripts": {

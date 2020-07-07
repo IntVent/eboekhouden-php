@@ -1,6 +1,6 @@
 <?php
 
-namespace Spatie\Skeleton\Tests;
+namespace IntVent\EBoekhouden\Tests;
 
 use PHPUnit\Framework\TestCase;
 
