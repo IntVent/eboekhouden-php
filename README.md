@@ -22,14 +22,20 @@ We highly appreciate you sending us a postcard from your hometown, mentioning wh
 You can install the package via composer:
 
 ```bash
-composer require spatie/eboekhouden-php
+composer require intvent/eboekhouden-php
 ```
 
 ## Usage
 
 ``` php
-$skeleton = new Intvent\Eboekhouden Php();
-echo $skeleton->echoPhrase('Hello, Intvent!');
+$config = [
+    'username' => 'your_username',
+    'sec_code_1' => 'your_sec_code_1',
+    'sec_code_2' => 'your_sec_code_2',
+];
+
+$client = new Intvent\Eboekhouden\Client($config);
+echo $client->echoPhrase('Hello, Intvent!');
 ```
 
 ## Testing
