@@ -115,7 +115,7 @@ class Client
             $relations = [$relations];
         }
 
-        return array_map(fn ($item) => new EboekhoudenRelation((array) $item), $relations);
+        return array_map(fn ($item) => (new EboekhoudenRelation((array) $item))->toArray(), $relations);
     }
 
     /**
@@ -149,7 +149,7 @@ class Client
             $ledgers = [$ledgers];
         }
 
-        return array_map(fn ($item) => new EboekhoudenLedger((array) $item), $ledgers);
+        return array_map(fn ($item) => (new EboekhoudenLedger((array) $item))->toArray(), $ledgers);
     }
 
     /**
@@ -193,7 +193,7 @@ class Client
             $invoices = [$invoices];
         }
 
-        return array_map(fn ($item) => new EboekhoudenInvoiceList((array) $item), $invoices);
+        return array_map(fn ($item) => (new EboekhoudenInvoiceList((array) $item))->toArray(), $invoices);
     }
 
     /**

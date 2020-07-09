@@ -2,10 +2,14 @@
 
 namespace IntVent\EBoekhouden\Models;
 
+use IntVent\EBoekhouden\Contracts\Arrayable;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
+use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
 
-class EboekhoudenLedger
+class EboekhoudenLedger implements Arrayable
 {
+    use ProtectedFieldsToArrayTrait;
+
     protected int $id = 0;
     protected string $code = '';
     protected string $description = '';

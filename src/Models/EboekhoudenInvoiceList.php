@@ -3,10 +3,14 @@
 namespace IntVent\EBoekhouden\Models;
 
 use DateTime;
+use IntVent\EBoekhouden\Contracts\Arrayable;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
+use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
 
-class EboekhoudenInvoiceList
+class EboekhoudenInvoiceList implements Arrayable
 {
+    use ProtectedFieldsToArrayTrait;
+
     protected string $invoice_number = '';
     protected string $relation_code = '';
     protected ?DateTime $date = null;

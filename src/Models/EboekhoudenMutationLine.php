@@ -2,8 +2,13 @@
 
 namespace IntVent\EBoekhouden\Models;
 
-class EboekhoudenMutationLine
+use IntVent\EBoekhouden\Contracts\Arrayable;
+use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
+
+class EboekhoudenMutationLine implements Arrayable
 {
+    use ProtectedFieldsToArrayTrait;
+
     /**
      * @var float   The line amount without vat
      */

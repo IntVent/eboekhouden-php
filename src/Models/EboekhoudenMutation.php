@@ -3,10 +3,14 @@
 namespace IntVent\EBoekhouden\Models;
 
 use DateTime;
+use IntVent\EBoekhouden\Contracts\Arrayable;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
+use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
 
-class EboekhoudenMutation
+class EboekhoudenMutation implements Arrayable
 {
+    use ProtectedFieldsToArrayTrait;
+
     protected int $number = 0;
     protected string $kind = '';
     protected ?DateTime $date = null;

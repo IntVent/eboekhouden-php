@@ -2,8 +2,13 @@
 
 namespace IntVent\EBoekhouden\Models;
 
-class EboekhoudenInvoiceLine
+use IntVent\EBoekhouden\Contracts\Arrayable;
+use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
+
+class EboekhoudenInvoiceLine implements Arrayable
 {
+    use ProtectedFieldsToArrayTrait;
+
     protected float $amount = 0;
     protected string $unit = 'piece';
     protected string $code = '';
