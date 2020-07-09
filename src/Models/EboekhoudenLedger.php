@@ -12,6 +12,11 @@ class EboekhoudenLedger
     protected string $category = '';
     protected string $group = '';
 
+    /**
+     * EboekhoudenLedger constructor.
+     * @param  array|null  $item
+     * @throws EboekhoudenException
+     */
     public function __construct(array $item = null)
     {
         if (! empty($item)) {
@@ -24,6 +29,10 @@ class EboekhoudenLedger
         }
     }
 
+    /**
+     * @param  string  $category
+     * @return string
+     */
     protected function parseCategory(string $category): string
     {
         switch ($category) {
