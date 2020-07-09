@@ -11,7 +11,8 @@ trait ProtectedFieldsToArrayTrait
             if (is_array($value)) {
                 $return[$key] = array_map(
                     fn ($item) => $item->toArray(),
-                $value);
+                    $value
+                );
             }
         }
 
