@@ -10,7 +10,7 @@ class EboekhoudenInvoiceList
     protected string $invoice_number = '';
     protected string $relation_code = '';
     protected ?DateTime $date = null;
-    protected ?int $payment_term = null;
+    protected int $payment_term = 0;
     protected float $total_excl_vat = 0.0;
     protected float $total_vat = 0.0;
     protected float $total_incl_vat = 0.0;
@@ -27,14 +27,15 @@ class EboekhoudenInvoiceList
     {
         if (! empty($item)) {
             $this
-                ->setNumber($item['MutatieNr'])
-                ->setKind($item['Soort'])
-                ->setDate(new DateTime($item['Datum']))
-                ->setLedgerCode($item['Rekening'])
-                ->setRelationCode($item['RelatieCode'])
                 ->setInvoiceNumber($item['Factuurnummer'])
-                ->setDescription($item['Omschrijving'])
-                ->setPaymentTerm($item['Betalingstermijn']);
+                ->setRelationCode($item['Relatiecode'])
+                ->setDate(new DateTime($item['Datum']))
+                ->setPaymentTerm($item['Betalingstermijn'])
+                ->setTotalExclVat($item['TotaalExclBTW'])
+                ->setTotalVat($item['TotaalBTW'])
+                ->setTotalInclVat($item['TotaalInclBTW'])
+                ->setTotalOutstanding($item['TotaalOpenstaand'])
+                ->setUrlToPdf($item['URLPDFBestand']);
 
             $lines = $item['Regels']->cFactuurRegel;
 
@@ -42,7 +43,7 @@ class EboekhoudenInvoiceList
                 $this->addLine(new EboekhoudenInvoiceLine((array) $lines));
             } else {
                 $this->setLines(array_map(
-                    fn (array $line) => new EboekhoudenInvoiceLine((array) $line),
+                    fn (object $line): EboekhoudenInvoiceLine => new EboekhoudenInvoiceLine((array) $line),
                     $lines
                 ));
             }
@@ -50,20 +51,20 @@ class EboekhoudenInvoiceList
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getNumber(): int
+    public function getInvoiceNumber(): string
     {
-        return $this->number;
+        return $this->invoice_number;
     }
 
     /**
-     * @param  int  $number
-     * @return EboekhoudenMutation
+     * @param  string  $invoice_number
+     * @return EboekhoudenInvoiceList
      */
-    public function setNumber(int $number): EboekhoudenMutation
+    public function setInvoiceNumber(string $invoice_number): EboekhoudenInvoiceList
     {
-        $this->number = $number;
+        $this->invoice_number = $invoice_number;
 
         return $this;
     }
@@ -71,18 +72,18 @@ class EboekhoudenInvoiceList
     /**
      * @return string
      */
-    public function getKind(): string
+    public function getRelationCode(): string
     {
-        return $this->kind;
+        return $this->relation_code;
     }
 
     /**
-     * @param  string  $kind
-     * @return EboekhoudenMutation
+     * @param  string  $relation_code
+     * @return EboekhoudenInvoiceList
      */
-    public function setKind(string $kind): EboekhoudenMutation
+    public function setRelationCode(string $relation_code): EboekhoudenInvoiceList
     {
-        $this->kind = $kind;
+        $this->relation_code = $relation_code;
 
         return $this;
     }
@@ -97,9 +98,9 @@ class EboekhoudenInvoiceList
 
     /**
      * @param  DateTime|null  $date
-     * @return EboekhoudenMutation
+     * @return EboekhoudenInvoiceList
      */
-    public function setDate(?DateTime $date): EboekhoudenMutation
+    public function setDate(?DateTime $date): EboekhoudenInvoiceList
     {
         $this->date = $date;
 
@@ -107,94 +108,18 @@ class EboekhoudenInvoiceList
     }
 
     /**
-     * @return string
+     * @return float
      */
-    public function getLedgerCode(): string
-    {
-        return $this->ledger_code;
-    }
-
-    /**
-     * @param  string  $ledger_code
-     * @return EboekhoudenMutation
-     */
-    public function setLedgerCode(string $ledger_code): EboekhoudenMutation
-    {
-        $this->ledger_code = $ledger_code;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getRelationCode(): ?string
-    {
-        return $this->relation_code;
-    }
-
-    /**
-     * @param  string|null  $relation_code
-     * @return EboekhoudenMutation
-     */
-    public function setRelationCode(?string $relation_code): EboekhoudenMutation
-    {
-        $this->relation_code = $relation_code;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getInvoiceNumber(): ?string
-    {
-        return $this->invoice_number;
-    }
-
-    /**
-     * @param  string|null  $invoice_number
-     * @return EboekhoudenMutation
-     */
-    public function setInvoiceNumber(?string $invoice_number): EboekhoudenMutation
-    {
-        $this->invoice_number = $invoice_number;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param  string  $description
-     * @return EboekhoudenMutation
-     */
-    public function setDescription(string $description): EboekhoudenMutation
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getPaymentTerm(): ?int
+    public function getPaymentTerm(): float
     {
         return $this->payment_term;
     }
 
     /**
-     * @param  int|null  $payment_term
-     * @return EboekhoudenMutation
+     * @param  int  $payment_term
+     * @return EboekhoudenInvoiceList
      */
-    public function setPaymentTerm(?int $payment_term): EboekhoudenMutation
+    public function setPaymentTerm(int $payment_term): EboekhoudenInvoiceList
     {
         $this->payment_term = $payment_term;
 
@@ -202,7 +127,102 @@ class EboekhoudenInvoiceList
     }
 
     /**
-     * @return EboekhoudenMutationLine[]
+     * @return float
+     */
+    public function getTotalExclVat(): float
+    {
+        return $this->total_excl_vat;
+    }
+
+    /**
+     * @param  float  $total_excl_vat
+     * @return EboekhoudenInvoiceList
+     */
+    public function setTotalExclVat(float $total_excl_vat): EboekhoudenInvoiceList
+    {
+        $this->total_excl_vat = $total_excl_vat;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalVat(): float
+    {
+        return $this->total_vat;
+    }
+
+    /**
+     * @param  float  $total_vat
+     * @return EboekhoudenInvoiceList
+     */
+    public function setTotalVat(float $total_vat): EboekhoudenInvoiceList
+    {
+        $this->total_vat = $total_vat;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalInclVat(): float
+    {
+        return $this->total_incl_vat;
+    }
+
+    /**
+     * @param  float  $total_incl_vat
+     * @return EboekhoudenInvoiceList
+     */
+    public function setTotalInclVat(float $total_incl_vat): EboekhoudenInvoiceList
+    {
+        $this->total_incl_vat = $total_incl_vat;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalOutstanding(): float
+    {
+        return $this->total_outstanding;
+    }
+
+    /**
+     * @param  float  $total_outstanding
+     * @return EboekhoudenInvoiceList
+     */
+    public function setTotalOutstanding(float $total_outstanding): EboekhoudenInvoiceList
+    {
+        $this->total_outstanding = $total_outstanding;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUrlToPdf(): ?string
+    {
+        return $this->url_to_pdf;
+    }
+
+    /**
+     * @param  string|null  $url_to_pdf
+     * @return EboekhoudenInvoiceList
+     */
+    public function setUrlToPdf(?string $url_to_pdf): EboekhoudenInvoiceList
+    {
+        $this->url_to_pdf = $url_to_pdf;
+
+        return $this;
+    }
+
+    /**
+     * @return EboekhoudenInvoiceLine[]
      */
     public function getLines(): array
     {
@@ -214,10 +234,10 @@ class EboekhoudenInvoiceList
     }
 
     /**
-     * @param  EboekhoudenMutationLine  $line
-     * @return EboekhoudenMutation
+     * @param  EboekhoudenInvoiceLine  $line
+     * @return EboekhoudenInvoiceList
      */
-    public function addLine(EboekhoudenMutationLine $line): EboekhoudenMutation
+    public function addLine(EboekhoudenInvoiceLine $line): EboekhoudenInvoiceList
     {
         if (empty($this->lines)) {
             $this->lines = [];
@@ -229,14 +249,14 @@ class EboekhoudenInvoiceList
 
     /**
      * @param  array  $lines
-     * @return EboekhoudenMutation
+     * @return EboekhoudenInvoiceList
      * @throws EboekhoudenException
      */
-    public function setLines(array $lines): EboekhoudenMutation
+    public function setLines(array $lines): EboekhoudenInvoiceList
     {
         foreach ($lines as $line) {
-            if (! ($line instanceof EboekhoudenMutationLine)) {
-                throw new EboekhoudenException('All mutation lines must be instance of '.EboekhoudenMutationLine::class);
+            if (! ($line instanceof EboekhoudenInvoiceLine)) {
+                throw new EboekhoudenException('All invoice lines must be instance of '.EboekhoudenInvoiceLine::class);
             }
         }
         $this->lines = $lines;

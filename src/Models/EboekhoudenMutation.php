@@ -41,7 +41,7 @@ class EboekhoudenMutation
                 $this->addLine(new EboekhoudenMutationLine((array) $lines));
             } else {
                 $this->setLines(array_map(
-                    fn (array $line) => new EboekhoudenMutationLine((array) $line),
+                    fn (object $line) => new EboekhoudenMutationLine((array) $line),
                     $lines
                 ));
             }

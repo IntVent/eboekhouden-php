@@ -14,6 +14,25 @@ class EboekhoudenInvoiceLine
     protected int $cost_placement_id = 0;
 
     /**
+     * EboekhoudenInvoiceLine constructor.
+     * @param  array|null  $item
+     */
+    public function __construct(array $item = null)
+    {
+        if (! empty($item)) {
+            $this
+                ->setAmount($item['Aantal'])
+                ->setUnit($item['Eenheid'])
+                ->setCode($item['Code'])
+                ->setDescription($item['Omschrijving'])
+                ->setPrice($item['PrijsPerEenheid'])
+                ->setTaxCode($item['BTWCode'])
+                ->setLedgerCode($item['TegenrekeningCode'])
+                ->setCostPlacementId($item['KostenplaatsID']);
+        }
+    }
+
+    /**
      * @return float
      */
     public function getAmount(): float
@@ -149,7 +168,7 @@ class EboekhoudenInvoiceLine
     /**
      * @return int
      */
-    public function getCostPlacementId(): string
+    public function getCostPlacementId(): int
     {
         return $this->cost_placement_id;
     }
