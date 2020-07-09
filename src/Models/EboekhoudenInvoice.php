@@ -14,8 +14,11 @@ class EboekhoudenInvoice implements Arrayable
     protected string $invoice_number = '';
     protected string $relation_code = '';
     protected ?DateTime $date = null;
-    protected int $payment_term = 0;
-    protected string $description = '';
+    protected int $payment_term = 30;
+    protected string $invoice_template = '';
+    protected string $email_from_address = '';
+    protected string $email_from_name = '';
+    protected string $mutation_description = '';
     protected array $lines = [];
 
     /**
@@ -102,18 +105,75 @@ class EboekhoudenInvoice implements Arrayable
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getInvoiceTemplate(): string
     {
-        return $this->description;
+        return $this->invoice_template;
     }
 
     /**
-     * @param  string  $description
+     * @param  string  $invoice_template
      * @return EboekhoudenInvoice
      */
-    public function setDescription(string $description): EboekhoudenInvoice
+    public function setInvoiceTemplate(string $invoice_template): EboekhoudenInvoice
     {
-        $this->description = $description;
+        $this->invoice_template = $invoice_template;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailFromAddress(): string
+    {
+        return $this->email_from_address;
+    }
+
+    /**
+     * @param  string  $email_from_address
+     * @return EboekhoudenInvoice
+     */
+    public function setEmailFromAddress(string $email_from_address): EboekhoudenInvoice
+    {
+        $this->email_from_address = $email_from_address;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailFromName(): string
+    {
+        return $this->email_from_name;
+    }
+
+    /**
+     * @param  string  $email_from_name
+     * @return EboekhoudenInvoice
+     */
+    public function setEmailFromName(string $email_from_name): EboekhoudenInvoice
+    {
+        $this->email_from_name = $email_from_name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMutationDescription(): string
+    {
+        return $this->mutation_description;
+    }
+
+    /**
+     * @param  string  $mutation_description
+     * @return EboekhoudenInvoice
+     */
+    public function setMutationDescription(string $mutation_description): EboekhoudenInvoice
+    {
+        $this->mutation_description = $mutation_description;
 
         return $this;
     }

@@ -1,6 +1,7 @@
 # A PHP framework agnostic package for E-boekhouden.nl
 
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
+With this package you can easily integrate it within your own PHP project.  
+If you wish to use this package and want to support future development. Please consider to sponsor.  
 
 ## Installation
 
@@ -18,7 +19,21 @@ $sec_code_1 = 'sec_code_1';
 $sec_code_2 = 'sec_code_2';
 
 $client = new Intvent\Eboekhouden\Client($username, $sec_code_1, $sec_code2);
-var_dump($client->getRelations());
+
+// Get SigleSignOnLink (AutoLogin)
+$autoLogin = $client->autoLogin();
+
+// Get the Relations
+$relations = $client->getRelations();
+
+// Get the Mutations
+$mutations = $client->getMutations();
+
+// Get the Ledgers
+$ledgers = $client->getLedgers();
+
+// Get the Invoices
+$invoices = $client->getInvoices();
 ```
 
 ## Testing
