@@ -1,6 +1,6 @@
 <?php
 
-namespace IntVent\EBoekhouden\Models;
+namespace IntVent\EBoekhouden\Filters;
 
 use DateTime;
 

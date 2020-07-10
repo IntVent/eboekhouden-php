@@ -1,7 +1,7 @@
 # A PHP framework agnostic package for E-boekhouden.nl
 
-With this package you can easily integrate it within your own PHP project.  
-If you wish to use this package and want to support future development. Please consider to sponsor.  
+With this package you can easily integrate E-boekhouden.nl within your PHP project.  
+If you wish to use this package and want to support future development. Please consider to [sponsor](https://github.com/sponsors/petericebear).  
 
 ## Installation
 
@@ -22,6 +22,9 @@ $client = new Intvent\Eboekhouden\Client($username, $sec_code_1, $sec_code2);
 
 // Get SigleSignOnLink (AutoLogin)
 $autoLogin = $client->autoLogin();
+
+// Get the Articles
+$articles = $client->getArticles();
 
 // Get the Relations
 $relations = $client->getRelations();

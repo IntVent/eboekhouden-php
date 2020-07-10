@@ -4,13 +4,15 @@ namespace IntVent\EBoekhouden;
 
 use DateTime;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenSoapException;
+use IntVent\EBoekhouden\Filters\ArticleFilter;
+use IntVent\EBoekhouden\Filters\InvoiceFilter;
+use IntVent\EBoekhouden\Filters\MutationFilter;
+use IntVent\EBoekhouden\Models\EboekhoudenArticle;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoiceList;
 use IntVent\EBoekhouden\Models\EboekhoudenLedger;
 use IntVent\EBoekhouden\Models\EboekhoudenMutation;
 use IntVent\EBoekhouden\Models\EboekhoudenRelation;
-use IntVent\EBoekhouden\Models\InvoiceFilter;
-use IntVent\EBoekhouden\Models\MutationFilter;
 use SoapClient;
 use SoapFault;
 
@@ -103,6 +105,48 @@ class Client
         $this->checkError('AutoLogin', $result);
 
         return sprintf('https://secure.e-boekhouden.nl/bh/inloggen.asp?LOGIN=1&t=%s&g=%s', $result->AutoLoginResult->Token, $this->secCode2);
+    }
+
+    /**
+     * Get all articles from E-Boekhouden.nl.
+     *
+     * @param ArticleFilter|null $filter
+     * @return array
+     * @throws EboekhoudenSoapException
+     */
+    public function getArticles(ArticleFilter $filter = null): array
+    {
+        if (is_null($filter)) {
+            $filter = new ArticleFilter();
+        }
+
+        $result = $this->soapClient->__soapCall('GetArtikelen', [
+            'GetArtikelen' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'cFilter' => [
+                    'ArtikelID' => $filter->getId(),
+                    'ArtikelOmschrijving' => $filter->getDescription(),
+                    'ArtikelCode' => $filter->getCode(),
+                    'GroepOmschrijving' => $filter->getGroupDescription(),
+                    'GroepCode' => $filter->getGroupCode(),
+                ],
+            ],
+        ]);
+
+        $this->checkError('GetArtikelen', $result);
+
+        if (! isset($result->GetArtikelenResult->Artikelen->cArtikel)) {
+            return [];
+        }
+
+        $articles = $result->GetArtikelenResult->Artikelen->cArtikel;
+
+        if (! is_array($articles)) {
+            $articles = [$articles];
+        }
+
+        return array_map(fn ($item) => (new EboekhoudenArticle((array)$item))->toArray(), $articles);
     }
 
     /**
