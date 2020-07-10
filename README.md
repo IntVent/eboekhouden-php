@@ -1,6 +1,6 @@
 # A PHP framework agnostic package for E-boekhouden.nl
 
-![Tests](https://github.com/intvent/eboekhouden-php/workflows/Tests/badge.svg)![Psalm](https://github.com/intvent/eboekhouden-php/workflows/Psalm/badge.svg)
+![Tests](https://github.com/intvent/eboekhouden-php/workflows/Tests/badge.svg) ![Psalm](https://github.com/intvent/eboekhouden-php/workflows/Psalm/badge.svg)
 
 With this package you can easily integrate E-boekhouden.nl within your PHP project.  
 If you wish to use this package and want to support future development. Please consider to [sponsor](https://github.com/sponsors/petericebear).  

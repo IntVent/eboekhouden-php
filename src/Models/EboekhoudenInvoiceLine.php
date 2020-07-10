@@ -160,7 +160,7 @@ class EboekhoudenInvoiceLine implements Arrayable
     }
 
     /**
-     * @param  string  $ledger_code
+     * @param string $ledger_code
      * @return EboekhoudenInvoiceLine
      */
     public function setLedgerCode(string $ledger_code): EboekhoudenInvoiceLine
@@ -179,7 +179,7 @@ class EboekhoudenInvoiceLine implements Arrayable
     }
 
     /**
-     * @param  int  $cost_placement_id
+     * @param int $cost_placement_id
      * @return EboekhoudenInvoiceLine
      */
     public function setCostPlacementId(int $cost_placement_id): EboekhoudenInvoiceLine

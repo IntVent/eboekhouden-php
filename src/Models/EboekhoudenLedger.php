@@ -18,7 +18,7 @@ class EboekhoudenLedger implements Arrayable
 
     /**
      * EboekhoudenLedger constructor.
-     * @param  array|null  $item
+     * @param array|null $item
      * @throws EboekhoudenException
      */
     public function __construct(array $item = null)
@@ -34,7 +34,7 @@ class EboekhoudenLedger implements Arrayable
     }
 
     /**
-     * @param  string  $category
+     * @param string $category
      * @return string
      */
     protected function parseCategory(string $category): string

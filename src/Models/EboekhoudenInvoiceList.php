@@ -24,7 +24,7 @@ class EboekhoudenInvoiceList implements Arrayable
 
     /**
      * EboekhoudenInvoiceList constructor.
-     * @param  array|null  $item
+     * @param array|null $item
      * @throws EboekhoudenException
      */
     public function __construct(array $item = null)
@@ -44,10 +44,10 @@ class EboekhoudenInvoiceList implements Arrayable
             $lines = $item['Regels']->cFactuurRegel;
 
             if (is_object($lines)) {
-                $this->addLine(new EboekhoudenInvoiceLine((array) $lines));
+                $this->addLine(new EboekhoudenInvoiceLine((array)$lines));
             } else {
                 $this->setLines(array_map(
-                    fn (object $line): EboekhoudenInvoiceLine => new EboekhoudenInvoiceLine((array) $line),
+                    fn (object $line): EboekhoudenInvoiceLine => new EboekhoudenInvoiceLine((array)$line),
                     $lines
                 ));
             }
@@ -63,7 +63,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  string  $invoice_number
+     * @param string $invoice_number
      * @return EboekhoudenInvoiceList
      */
     public function setInvoiceNumber(string $invoice_number): EboekhoudenInvoiceList
@@ -82,7 +82,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  string  $relation_code
+     * @param string $relation_code
      * @return EboekhoudenInvoiceList
      */
     public function setRelationCode(string $relation_code): EboekhoudenInvoiceList
@@ -101,7 +101,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  DateTime|null  $date
+     * @param DateTime|null $date
      * @return EboekhoudenInvoiceList
      */
     public function setDate(?DateTime $date): EboekhoudenInvoiceList
@@ -120,7 +120,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  int  $payment_term
+     * @param int $payment_term
      * @return EboekhoudenInvoiceList
      */
     public function setPaymentTerm(int $payment_term): EboekhoudenInvoiceList
@@ -139,7 +139,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  float  $total_excl_vat
+     * @param float $total_excl_vat
      * @return EboekhoudenInvoiceList
      */
     public function setTotalExclVat(float $total_excl_vat): EboekhoudenInvoiceList
@@ -158,7 +158,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  float  $total_vat
+     * @param float $total_vat
      * @return EboekhoudenInvoiceList
      */
     public function setTotalVat(float $total_vat): EboekhoudenInvoiceList
@@ -177,7 +177,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  float  $total_incl_vat
+     * @param float $total_incl_vat
      * @return EboekhoudenInvoiceList
      */
     public function setTotalInclVat(float $total_incl_vat): EboekhoudenInvoiceList
@@ -196,7 +196,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  float  $total_outstanding
+     * @param float $total_outstanding
      * @return EboekhoudenInvoiceList
      */
     public function setTotalOutstanding(float $total_outstanding): EboekhoudenInvoiceList
@@ -215,7 +215,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  string|null  $url_to_pdf
+     * @param string|null $url_to_pdf
      * @return EboekhoudenInvoiceList
      */
     public function setUrlToPdf(?string $url_to_pdf): EboekhoudenInvoiceList
@@ -238,7 +238,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  EboekhoudenInvoiceLine  $line
+     * @param EboekhoudenInvoiceLine $line
      * @return EboekhoudenInvoiceList
      */
     public function addLine(EboekhoudenInvoiceLine $line): EboekhoudenInvoiceList
@@ -252,7 +252,7 @@ class EboekhoudenInvoiceList implements Arrayable
     }
 
     /**
-     * @param  array  $lines
+     * @param array $lines
      * @return EboekhoudenInvoiceList
      * @throws EboekhoudenException
      */
@@ -260,7 +260,7 @@ class EboekhoudenInvoiceList implements Arrayable
     {
         foreach ($lines as $line) {
             if (! ($line instanceof EboekhoudenInvoiceLine)) {
-                throw new EboekhoudenException('All invoice lines must be instance of '.EboekhoudenInvoiceLine::class);
+                throw new EboekhoudenException('All invoice lines must be instance of ' . EboekhoudenInvoiceLine::class);
             }
         }
         $this->lines = $lines;

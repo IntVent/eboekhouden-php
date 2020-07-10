@@ -20,7 +20,7 @@ class EboekhoudenMutationLine implements Arrayable
 
     /**
      * EboekhoudenMutationLine constructor.
-     * @param  array|null  $item
+     * @param array|null $item
      */
     public function __construct(array $item = null)
     {

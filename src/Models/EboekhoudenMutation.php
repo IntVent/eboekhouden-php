@@ -23,7 +23,7 @@ class EboekhoudenMutation implements Arrayable
 
     /**
      * EboekhoudenMutation constructor.
-     * @param  array|null  $item
+     * @param array|null $item
      * @throws EboekhoudenException
      */
     public function __construct(array $item = null)
@@ -42,10 +42,10 @@ class EboekhoudenMutation implements Arrayable
             $lines = $item['MutatieRegels']->cMutatieListRegel;
 
             if (is_object($lines)) {
-                $this->addLine(new EboekhoudenMutationLine((array) $lines));
+                $this->addLine(new EboekhoudenMutationLine((array)$lines));
             } else {
                 $this->setLines(array_map(
-                    fn (object $line) => new EboekhoudenMutationLine((array) $line),
+                    fn (object $line) => new EboekhoudenMutationLine((array)$line),
                     $lines
                 ));
             }
@@ -61,7 +61,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  int  $number
+     * @param int $number
      * @return EboekhoudenMutation
      */
     public function setNumber(int $number): EboekhoudenMutation
@@ -80,7 +80,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  string  $kind
+     * @param string $kind
      * @return EboekhoudenMutation
      */
     public function setKind(string $kind): EboekhoudenMutation
@@ -99,7 +99,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  DateTime|null  $date
+     * @param DateTime|null $date
      * @return EboekhoudenMutation
      */
     public function setDate(?DateTime $date): EboekhoudenMutation
@@ -118,7 +118,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  string  $ledger_code
+     * @param string $ledger_code
      * @return EboekhoudenMutation
      */
     public function setLedgerCode(string $ledger_code): EboekhoudenMutation
@@ -137,7 +137,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  string|null  $relation_code
+     * @param string|null $relation_code
      * @return EboekhoudenMutation
      */
     public function setRelationCode(?string $relation_code): EboekhoudenMutation
@@ -156,7 +156,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  string|null  $invoice_number
+     * @param string|null $invoice_number
      * @return EboekhoudenMutation
      */
     public function setInvoiceNumber(?string $invoice_number): EboekhoudenMutation
@@ -175,7 +175,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  string  $description
+     * @param string $description
      * @return EboekhoudenMutation
      */
     public function setDescription(string $description): EboekhoudenMutation
@@ -194,7 +194,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  int|null  $payment_term
+     * @param int|null $payment_term
      * @return EboekhoudenMutation
      */
     public function setPaymentTerm(?int $payment_term): EboekhoudenMutation
@@ -217,7 +217,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  EboekhoudenMutationLine  $line
+     * @param EboekhoudenMutationLine $line
      * @return EboekhoudenMutation
      */
     public function addLine(EboekhoudenMutationLine $line): EboekhoudenMutation
@@ -231,7 +231,7 @@ class EboekhoudenMutation implements Arrayable
     }
 
     /**
-     * @param  array  $lines
+     * @param array $lines
      * @return EboekhoudenMutation
      * @throws EboekhoudenException
      */
@@ -239,7 +239,7 @@ class EboekhoudenMutation implements Arrayable
     {
         foreach ($lines as $line) {
             if (! ($line instanceof EboekhoudenMutationLine)) {
-                throw new EboekhoudenException('All mutation lines must be instance of '.EboekhoudenMutationLine::class);
+                throw new EboekhoudenException('All mutation lines must be instance of ' . EboekhoudenMutationLine::class);
             }
         }
         $this->lines = $lines;
