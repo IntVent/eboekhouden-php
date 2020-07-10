@@ -16,6 +16,9 @@ class EboekhoudenInvoice implements Arrayable
     protected ?DateTime $date = null;
     protected int $payment_term = 30;
     protected string $invoice_template = '';
+    protected bool $send_per_email = false;
+    protected string $email_subject = '';
+    protected string $email_message = '';
     protected string $email_from_address = '';
     protected string $email_from_name = '';
     protected string $mutation_description = '';
@@ -30,7 +33,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  string  $invoice_number
+     * @param string $invoice_number
      * @return EboekhoudenInvoice
      */
     public function setInvoiceNumber(string $invoice_number): EboekhoudenInvoice
@@ -49,7 +52,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  string  $relation_code
+     * @param string $relation_code
      * @return EboekhoudenInvoice
      */
     public function setRelationCode(string $relation_code): EboekhoudenInvoice
@@ -68,7 +71,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  DateTime|null  $date
+     * @param DateTime|null $date
      * @return EboekhoudenInvoice
      */
     public function setDate(?DateTime $date): EboekhoudenInvoice
@@ -87,7 +90,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  int  $payment_term
+     * @param int $payment_term
      * @return EboekhoudenInvoice
      * @throws EboekhoudenException
      */
@@ -111,12 +114,69 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  string  $invoice_template
+     * @param string $invoice_template
      * @return EboekhoudenInvoice
      */
     public function setInvoiceTemplate(string $invoice_template): EboekhoudenInvoice
     {
         $this->invoice_template = $invoice_template;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSendPerEmail(): bool
+    {
+        return $this->send_per_email;
+    }
+
+    /**
+     * @param bool $send_per_email
+     * @return EboekhoudenInvoice
+     */
+    public function setSendPerEmail(bool $send_per_email): EboekhoudenInvoice
+    {
+        $this->send_per_email = $send_per_email;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailSubject(): string
+    {
+        return $this->email_subject;
+    }
+
+    /**
+     * @param string $email_subject
+     * @return EboekhoudenInvoice
+     */
+    public function setEmailSubject(string $email_subject): EboekhoudenInvoice
+    {
+        $this->email_subject = $email_subject;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailMessage(): string
+    {
+        return $this->email_message;
+    }
+
+    /**
+     * @param string $email_message
+     * @return EboekhoudenInvoice
+     */
+    public function setEmailMessage(string $email_message): EboekhoudenInvoice
+    {
+        $this->email_message = $email_message;
 
         return $this;
     }
@@ -130,7 +190,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  string  $email_from_address
+     * @param string $email_from_address
      * @return EboekhoudenInvoice
      */
     public function setEmailFromAddress(string $email_from_address): EboekhoudenInvoice
@@ -149,7 +209,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  string  $email_from_name
+     * @param string $email_from_name
      * @return EboekhoudenInvoice
      */
     public function setEmailFromName(string $email_from_name): EboekhoudenInvoice
@@ -168,7 +228,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  string  $mutation_description
+     * @param string $mutation_description
      * @return EboekhoudenInvoice
      */
     public function setMutationDescription(string $mutation_description): EboekhoudenInvoice
@@ -191,7 +251,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  EboekhoudenInvoiceLine  $line
+     * @param EboekhoudenInvoiceLine $line
      * @return EboekhoudenInvoice
      */
     public function addLine(EboekhoudenInvoiceLine $line): EboekhoudenInvoice
@@ -206,7 +266,7 @@ class EboekhoudenInvoice implements Arrayable
     }
 
     /**
-     * @param  array  $lines
+     * @param array $lines
      * @return EboekhoudenInvoice
      * @throws EboekhoudenException
      */
@@ -214,7 +274,7 @@ class EboekhoudenInvoice implements Arrayable
     {
         foreach ($lines as $line) {
             if (! ($line instanceof EboekhoudenInvoiceLine)) {
-                throw new EboekhoudenException('All invoice lines must be instance of '.EboekhoudenInvoiceLine::class);
+                throw new EboekhoudenException('All invoice lines must be instance of ' . EboekhoudenInvoiceLine::class);
             }
         }
         $this->lines = $lines;
