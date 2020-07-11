@@ -12,21 +12,31 @@ class EboekhoudenRelation implements Arrayable
     use ProtectedFieldsToArrayTrait;
 
     protected ?int $id = null;
+    protected string $relation_type = 'B';
     protected ?DateTime $add_date = null;
     protected int $code = 0;
     protected string $company = '';
-    protected ?string $contact = null;
-    protected ?string $gender = null;
-    protected ?string $address = null;
-    protected ?string $zipcode = null;
-    protected ?string $city = null;
-    protected ?string $country = null;
-    protected ?string $phone = null;
-    protected ?string $cell_phone = null;
-    protected ?string $email = null;
-    protected ?string $site = null;
-    protected ?string $notes = null;
-    protected ?string $vat_number = null;
+    protected string $contact = '';
+    protected string $gender = '';
+    protected string $address = '';
+    protected string $zipcode = '';
+    protected string $city = '';
+    protected string $country = '';
+    protected string $postal_address = '';
+    protected string $postal_zipcode = '';
+    protected string $postal_city = '';
+    protected string $postal_country = '';
+    protected string $phone = '';
+    protected string $cell_phone = '';
+    protected string $email = '';
+    protected string $site = '';
+    protected string $notes = '';
+    protected string $vat_number = '';
+    protected string $salutation = '';
+    protected string $iban = '';
+    protected string $bic = '';
+    protected int $default_ledger_id = 0;
+    protected bool $receive_newsletter = true;
 
     /**
      * EboekhoudenRelation constructor.
@@ -52,7 +62,9 @@ class EboekhoudenRelation implements Arrayable
                 ->setEmail($item['Email'])
                 ->setSite($item['Site'])
                 ->setNotes($item['Notitie'])
-                ->setVatNumber($item['BTWNummer']);
+                ->setVatNumber($item['BTWNummer'])
+                ->setReceiveNewsletter(! ! $item['GeenEmail'])
+            ;
         }
     }
 
@@ -75,6 +87,25 @@ class EboekhoudenRelation implements Arrayable
             throw new EboekhoudenException('Id must be a positive integer');
         }
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelationType(): string
+    {
+        return $this->relation_type;
+    }
+
+    /**
+     * @param string $relation_type
+     * @return EboekhoudenRelation
+     */
+    public function setRelationType(string $relation_type): EboekhoudenRelation
+    {
+        $this->relation_type = $relation_type;
 
         return $this;
     }
@@ -143,18 +174,18 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getContact(): ?string
+    public function getContact(): string
     {
         return $this->contact;
     }
 
     /**
-     * @param string|null $contact
+     * @param string $contact
      * @return EboekhoudenRelation
      */
-    public function setContact(?string $contact): EboekhoudenRelation
+    public function setContact(string $contact): EboekhoudenRelation
     {
         if ($contact) {
             $this->contact = $contact;
@@ -164,18 +195,18 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getGender(): ?string
+    public function getGender(): string
     {
         return $this->gender;
     }
 
     /**
-     * @param string|null $gender
+     * @param string $gender
      * @return EboekhoudenRelation
      */
-    public function setGender(?string $gender): EboekhoudenRelation
+    public function setGender(string $gender): EboekhoudenRelation
     {
         if ($gender) {
             $this->gender = $gender;
@@ -185,18 +216,18 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAddress(): ?string
+    public function getAddress(): string
     {
         return $this->address;
     }
 
     /**
-     * @param string|null $address
+     * @param string $address
      * @return EboekhoudenRelation
      */
-    public function setAddress(?string $address): EboekhoudenRelation
+    public function setAddress(string $address): EboekhoudenRelation
     {
         if ($address) {
             $this->address = $address;
@@ -206,18 +237,18 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getZipcode(): ?string
+    public function getZipcode(): string
     {
         return $this->zipcode;
     }
 
     /**
-     * @param string|null $zipcode
+     * @param string $zipcode
      * @return EboekhoudenRelation
      */
-    public function setZipcode(?string $zipcode): EboekhoudenRelation
+    public function setZipcode(string $zipcode): EboekhoudenRelation
     {
         if ($zipcode) {
             $zipcode = str_replace(' ', '', strtoupper($zipcode));
@@ -228,18 +259,18 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCity(): ?string
+    public function getCity(): string
     {
         return $this->city;
     }
 
     /**
-     * @param string|null $city
+     * @param string $city
      * @return EboekhoudenRelation
      */
-    public function setCity(?string $city): EboekhoudenRelation
+    public function setCity(string $city): EboekhoudenRelation
     {
         if ($city) {
             $city = ucfirst($city);
@@ -250,82 +281,154 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCountry(): ?string
+    public function getCountry(): string
     {
         return $this->country;
     }
 
     /**
-     * @param string|null $country
+     * @param string $country
      * @return EboekhoudenRelation
      */
-    public function setCountry(?string $country): EboekhoudenRelation
+    public function setCountry(string $country): EboekhoudenRelation
     {
-        if ($country) {
+        if (! empty($country)) {
             $country = ucfirst($country);
-            $this->country = $country;
         }
+        $this->country = $country;
 
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getPhone(): ?string
+    public function getPostalAddress(): string
+    {
+        return $this->postal_address;
+    }
+
+    /**
+     * @param string $postal_address
+     * @return EboekhoudenRelation
+     */
+    public function setPostalAddress(string $postal_address): EboekhoudenRelation
+    {
+        $this->postal_address = $postal_address;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostalZipcode(): string
+    {
+        return $this->postal_zipcode;
+    }
+
+    /**
+     * @param string $postal_zipcode
+     * @return EboekhoudenRelation
+     */
+    public function setPostalZipcode(string $postal_zipcode): EboekhoudenRelation
+    {
+        $this->postal_zipcode = $postal_zipcode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostalCity(): string
+    {
+        return $this->postal_city;
+    }
+
+    /**
+     * @param string $postal_city
+     * @return EboekhoudenRelation
+     */
+    public function setPostalCity(string $postal_city): EboekhoudenRelation
+    {
+        $this->postal_city = $postal_city;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostalCountry(): string
+    {
+        return $this->postal_country;
+    }
+
+    /**
+     * @param string $postal_country
+     * @return EboekhoudenRelation
+     */
+    public function setPostalCountry(string $postal_country): EboekhoudenRelation
+    {
+        $this->postal_country = $postal_country;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
     {
         return $this->phone;
     }
 
     /**
-     * @param string|null $phone
+     * @param string $phone
      * @return EboekhoudenRelation
      */
-    public function setPhone(?string $phone): EboekhoudenRelation
+    public function setPhone(string $phone): EboekhoudenRelation
     {
-        if ($phone) {
-            $this->phone = $phone;
-        }
+        $this->phone = $phone;
 
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getCellPhone(): ?string
+    public function getCellPhone(): string
     {
         return $this->cell_phone;
     }
 
     /**
-     * @param string|null $cell_phone
+     * @param string $cell_phone
      * @return EboekhoudenRelation
      */
-    public function setCellPhone(?string $cell_phone): EboekhoudenRelation
+    public function setCellPhone(string $cell_phone): EboekhoudenRelation
     {
-        if ($cell_phone) {
-            $this->cell_phone = $cell_phone;
-        }
+        $this->cell_phone = $cell_phone;
 
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
 
     /**
-     * @param string|null $email
+     * @param string $email
      * @return EboekhoudenRelation
      */
-    public function setEmail(?string $email): EboekhoudenRelation
+    public function setEmail(string $email): EboekhoudenRelation
     {
         if (empty($email)) {
             return $this;
@@ -341,18 +444,18 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getSite(): ?string
+    public function getSite(): string
     {
         return $this->site;
     }
 
     /**
-     * @param string|null $site
+     * @param string $site
      * @return EboekhoudenRelation
      */
-    public function setSite(?string $site): EboekhoudenRelation
+    public function setSite(string $site): EboekhoudenRelation
     {
         if (empty($site)) {
             return $this;
@@ -368,43 +471,134 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getNotes(): ?string
+    public function getNotes(): string
     {
         return $this->notes;
     }
 
     /**
-     * @param string|null $notes
+     * @param string $notes
      * @return EboekhoudenRelation
      */
-    public function setNotes(?string $notes): EboekhoudenRelation
+    public function setNotes(string $notes): EboekhoudenRelation
     {
-        if ($notes) {
-            $this->notes = $notes;
-        }
+        $this->notes = $notes;
 
         return $this;
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getVatNumber(): ?string
+    public function getVatNumber(): string
     {
         return $this->vat_number;
     }
 
     /**
-     * @param string|null $vat_number
+     * @param string $vat_number
      * @return EboekhoudenRelation
      */
-    public function setVatNumber(?string $vat_number): EboekhoudenRelation
+    public function setVatNumber(string $vat_number): EboekhoudenRelation
     {
-        if ($vat_number) {
-            $this->vat_number = $vat_number;
-        }
+        $this->vat_number = $vat_number;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSalutation(): string
+    {
+        return $this->salutation;
+    }
+
+    /**
+     * @param string $salutation
+     * @return EboekhoudenRelation
+     */
+    public function setSalutation(string $salutation): EboekhoudenRelation
+    {
+        $this->salutation = $salutation;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIBAN(): string
+    {
+        return $this->iban;
+    }
+
+    /**
+     * @param string $iban
+     * @return EboekhoudenRelation
+     */
+    public function setIBAN(string $iban): EboekhoudenRelation
+    {
+        $this->iban = $iban;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBIC(): string
+    {
+        return $this->bic;
+    }
+
+    /**
+     * @param string $bic
+     * @return EboekhoudenRelation
+     */
+    public function setBIC(string $bic): EboekhoudenRelation
+    {
+        $this->bic = $bic;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDefaultLedgerId(): int
+    {
+        return $this->default_ledger_id;
+    }
+
+    /**
+     * @param int $default_ledger_id
+     * @return EboekhoudenRelation
+     */
+    public function setDefaultLedgerId(int $default_ledger_id): EboekhoudenRelation
+    {
+        $this->default_ledger_id = $default_ledger_id;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getReceiveNewsletter(): bool
+    {
+        return $this->getReceiveNewsletter();
+    }
+
+    /**
+     * @param bool $receive_newsletter
+     * @return EboekhoudenRelation
+     */
+    public function setReceiveNewsletter(bool $receive_newsletter): EboekhoudenRelation
+    {
+        $this->receive_newsletter = $receive_newsletter;
 
         return $this;
     }
