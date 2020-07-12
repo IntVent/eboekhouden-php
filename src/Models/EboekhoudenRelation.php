@@ -57,13 +57,17 @@ class EboekhoudenRelation implements Arrayable
                 ->setZipcode($item['Postcode'])
                 ->setCity($item['Plaats'])
                 ->setCountry($item['Land'])
+                ->setPostalAddress($item['Adres2'])
+                ->setPostalZipcode($item['Postcode2'])
+                ->setPostalCity($item['Plaats2'])
+                ->setPostalCountry($item['Land2'])
                 ->setPhone($item['Telefoon'])
                 ->setCellPhone($item['GSM'])
                 ->setEmail($item['Email'])
                 ->setSite($item['Site'])
                 ->setNotes($item['Notitie'])
                 ->setVatNumber($item['BTWNummer'])
-                ->setReceiveNewsletter(! ! $item['GeenEmail'])
+                ->setReceiveNewsletter(! ! ! $item['GeenEmail'])
             ;
         }
     }
