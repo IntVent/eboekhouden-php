@@ -240,8 +240,8 @@ class Client
                 'cFilter' => [
                     'Factuurnummer' => $filter->getInvoiceNumber(),
                     'Relatiecode' => $filter->getRelationCode(),
-                    'DatumVan' => $dateFrom->format('c'),
-                    'DatumTm' => $dateTo->format('c'),
+                    'DatumVan' => $dateFrom->format('Y-m-d'),
+                    'DatumTm' => $dateTo->format('Y-m-d'),
                 ],
             ],
         ]);
@@ -286,8 +286,8 @@ class Client
                     'MutatieNrVan' => 0,
                     'MutatieNrTm' => 0,
                     'Factuurnummer' => '',
-                    'DatumVan' => $dateFrom->format('c'),
-                    'DatumTm' => $dateTo->format('c'),
+                    'DatumVan' => $dateFrom->format('Y-m-d'),
+                    'DatumTm' => $dateTo->format('Y-m-d'),
                 ],
             ],
         ]);
@@ -394,7 +394,7 @@ class Client
         return [
             'Factuurnummer' => $invoice->getInvoiceNumber(),
             'Relatiecode' => $invoice->getRelationCode(),
-            'Datum' => (new DateTime())->format('c'),
+            'Datum' => (new DateTime())->format('Y-m-d'),
             'Betalingstermijn' => $invoice->getPaymentTerm(),
             'Factuursjabloon' => $invoice->getInvoiceTemplate(),
             'PerEmailVerzenden' => $invoice->getSendPerEmail(),
@@ -406,7 +406,7 @@ class Client
             'IncassoIBAN' => '',
             'IncassoMachtigingSoort' => '',
             'IncassoMachtigingID' => '',
-            'IncassoMachtigingDatumOndertekening' => (new DateTime('1970-01-01 00:00:00'))->format('c'),
+            'IncassoMachtigingDatumOndertekening' => (new DateTime('1970-01-01 00:00:00'))->format('Y-m-d'),
             'IncassoMachtigingFirst' => 0,
             'IncassoRekeningNummer' => '',
             'IncassoTnv' => '',
@@ -434,7 +434,7 @@ class Client
 
         return [
             'ID' => $id,
-            'AddDatum' => ($relation->getAddDate() ?? new DateTime())->format('c'),
+            'AddDatum' => ($relation->getAddDate() ?? new DateTime())->format('Y-m-d'),
             'Code' => (string) $relation->getCode(),
             'Bedrijf' => $relation->getCompany(),
             'Contactpersoon' => $relation->getContact(),
