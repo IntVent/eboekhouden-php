@@ -402,7 +402,7 @@ class Client
             'EmailBericht' => $invoice->getEmailMessage(),
             'EmailVanAdres' => $invoice->getEmailFromAddress(),
             'EmailVanNaam' => $invoice->getEmailFromName(),
-            'AutomatischeIncasso' => 0,
+            'AutomatischeIncasso' => $invoice->getAutomaticIncasso(),
             'IncassoIBAN' => '',
             'IncassoMachtigingSoort' => '',
             'IncassoMachtigingID' => '',

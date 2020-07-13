@@ -21,6 +21,7 @@ class EboekhoudenInvoice implements Arrayable
     protected string $email_message = '';
     protected string $email_from_address = '';
     protected string $email_from_name = '';
+    protected bool $automatic_incasso = false;
     protected string $mutation_description = '';
     protected array $lines = [];
 
@@ -215,6 +216,25 @@ class EboekhoudenInvoice implements Arrayable
     public function setEmailFromName(string $email_from_name): EboekhoudenInvoice
     {
         $this->email_from_name = $email_from_name;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getAutomaticIncasso(): bool
+    {
+        return $this->automatic_incasso;
+    }
+
+    /**
+     * @param bool $automatic_incasso
+     * @return EboekhoudenInvoice
+     */
+    public function setAutomaticIncasso(bool $automatic_incasso): EboekhoudenInvoice
+    {
+        $this->automatic_incasso = $automatic_incasso;
 
         return $this;
     }
