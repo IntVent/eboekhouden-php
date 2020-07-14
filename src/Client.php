@@ -173,7 +173,9 @@ class Client
         ]);
 
         $this->checkError('GetRelaties', $result);
-
+        if (! isset($result->GetRelatiesResult->Relaties->cRelatie)) {
+            return  [];
+        }
         $relations = $result->GetRelatiesResult->Relaties->cRelatie;
 
         if (! is_array($relations)) {
