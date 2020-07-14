@@ -9,7 +9,7 @@ class MutationFilter
     protected int $mutation_number = 0;
     protected int $mutation_number_from = 0;
     protected int $mutation_number_to = 0;
-    protected int $invoice_number = 0;
+    protected string $invoice_number = '';
     protected ?DateTime $date_from = null;
     protected ?DateTime $date_to = null;
 
