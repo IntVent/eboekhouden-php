@@ -283,9 +283,9 @@ class Client
                 'SecurityCode2' => $this->secCode2,
                 'cFilter' => [
                     'MutatieNr' => $filter->getMutationNumber(),
-                    'MutatieNrVan' => 0,
-                    'MutatieNrTm' => 0,
-                    'Factuurnummer' => '',
+                    'MutatieNrVan' => $filter->getMutationNumberFrom(),
+                    'MutatieNrTm' => $filter->getMutationNumberTo(),
+                    'Factuurnummer' => $filter->getInvoiceNumber(),
                     'DatumVan' => $dateFrom->format('Y-m-d'),
                     'DatumTm' => $dateTo->format('Y-m-d'),
                 ],
