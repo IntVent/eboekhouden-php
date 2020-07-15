@@ -593,7 +593,7 @@ class EboekhoudenRelation implements Arrayable
      */
     public function getReceiveNewsletter(): bool
     {
-        return $this->getReceiveNewsletter();
+        return $this->receive_newsletter;
     }
 
     /**
