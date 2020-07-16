@@ -10,7 +10,7 @@ class EboekhoudenInvoiceLine implements Arrayable
     use ProtectedFieldsToArrayTrait;
 
     protected float $amount = 0;
-    protected string $unit = 'piece';
+    protected string $unit = 'stuk';
     protected string $code = '';
     protected string $description = '';
     protected float $price = 0;

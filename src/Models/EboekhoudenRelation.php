@@ -14,7 +14,7 @@ class EboekhoudenRelation implements Arrayable
     protected ?int $id = null;
     protected string $relation_type = 'B';
     protected ?DateTime $add_date = null;
-    protected int $code = 0;
+    protected string $code = '';
     protected string $company = '';
     protected string $contact = '';
     protected string $gender = '';
@@ -49,7 +49,7 @@ class EboekhoudenRelation implements Arrayable
             $this
                 ->setId($item['ID'])
                 ->setAddDate(new DateTime($item['AddDatum']))
-                ->setCode((int)$item['Code'])
+                ->setCode($item['Code'])
                 ->setCompany($item['Bedrijf'])
                 ->setContact($item['Contactpersoon'])
                 ->setGender($item['Geslacht'])
@@ -136,23 +136,19 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getCode(): int
+    public function getCode(): string
     {
         return $this->code;
     }
 
     /**
-     * @param int $code
+     * @param string $code
      * @return EboekhoudenRelation
-     * @throws EboekhoudenException
      */
-    public function setCode(int $code): EboekhoudenRelation
+    public function setCode(string $code): EboekhoudenRelation
     {
-        if ($code < 0) {
-            throw new EboekhoudenException("Code must be a positive integer.");
-        }
         $this->code = $code;
 
         return $this;

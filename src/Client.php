@@ -437,7 +437,7 @@ class Client
         return [
             'ID' => $id,
             'AddDatum' => ($relation->getAddDate() ?? new DateTime())->format('Y-m-d'),
-            'Code' => (string) $relation->getCode(),
+            'Code' => $relation->getCode(),
             'Bedrijf' => $relation->getCompany(),
             'Contactpersoon' => $relation->getContact(),
             'Geslacht' => $relation->getGender(),
