@@ -13,6 +13,7 @@ use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoiceList;
 use IntVent\EBoekhouden\Models\EboekhoudenLedger;
 use IntVent\EBoekhouden\Models\EboekhoudenMutation;
+use IntVent\EBoekhouden\Models\EboekhoudenOutstandingPost;
 use IntVent\EBoekhouden\Models\EboekhoudenRelation;
 use SoapClient;
 use SoapFault;
@@ -184,6 +185,34 @@ class Client
         }
 
         return array_map(fn ($item) => (new EboekhoudenRelation((array)$item))->toArray(), $relations);
+    }
+
+    /**
+     * Get all OutstandingPosts from E-boekhouden.nl
+     *
+     * @param  string  $kind 'Debiteuren' or 'Crediteuren'
+     * @return array
+     * @throws EboekhoudenSoapException
+     */
+    public function getOutstandingPosts(string $kind = 'Debiteuren'): array
+    {
+        $result = $this->soapClient->__soapCall('GetOpenPosten', [
+            'GetOpenPosten' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'OpSoort' => $kind,
+            ],
+        ]);
+
+        $this->checkError('GetOpenPostenResult', $result);
+
+        $outstandingPosts = $result->GetOpenPostenResult->Openposten->cOpenPost;
+
+        if (! is_array($outstandingPosts)) {
+            $outstandingPosts = [$outstandingPosts];
+        }
+
+        return array_map(fn ($item) => (new EboekhoudenOutstandingPost((array)$item))->toArray(), $outstandingPosts);
     }
 
     /**
