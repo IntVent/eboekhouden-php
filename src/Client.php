@@ -7,6 +7,7 @@ use IntVent\EBoekhouden\Exceptions\EboekhoudenSoapException;
 use IntVent\EBoekhouden\Filters\ArticleFilter;
 use IntVent\EBoekhouden\Filters\InvoiceFilter;
 use IntVent\EBoekhouden\Filters\MutationFilter;
+use IntVent\EBoekhouden\Filters\SaldoFilter;
 use IntVent\EBoekhouden\Models\EboekhoudenArticle;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoiceList;
@@ -217,6 +218,38 @@ class Client
         }
 
         return array_map(fn ($item) => (new EboekhoudenLedger((array)$item))->toArray(), $ledgers);
+    }
+
+    /**
+     * @param  SaldoFilter|null  $filter
+     * @return float
+     * @throws EboekhoudenSoapException
+     */
+    public function getSaldo(SaldoFilter $filter = null): float
+    {
+        if (is_null($filter)) {
+            $filter = new SaldoFilter();
+        }
+
+        $dateFrom = $filter->getDateFrom() ?? new DateTime('1970-01-01 00:00:00');
+        $dateTo = $filter->getDateTo() ?? new DateTime('2050-12-31 23:59:59');
+
+        $result = $this->soapClient->__soapCall('GetSaldo', [
+            'GetSaldo' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'cFilter' => [
+                    'GbCode' => $filter->getLedgerCode(),
+                    'KostenPlaatsId' => $filter->getCostPlacementId(),
+                    'DatumVan' => $dateFrom->format('Y-m-d'),
+                    'DatumTm' => $dateTo->format('Y-m-d'),
+                ],
+            ],
+        ]);
+
+        $this->checkError('GetSaldo', $result);
+
+        return $result->GetSaldoResult->Saldo;
     }
 
     /**
