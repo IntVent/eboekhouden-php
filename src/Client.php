@@ -8,6 +8,7 @@ use IntVent\EBoekhouden\Filters\ArticleFilter;
 use IntVent\EBoekhouden\Filters\InvoiceFilter;
 use IntVent\EBoekhouden\Filters\LedgerFilter;
 use IntVent\EBoekhouden\Filters\MutationFilter;
+use IntVent\EBoekhouden\Filters\RelationFilter;
 use IntVent\EBoekhouden\Filters\SaldoFilter;
 use IntVent\EBoekhouden\Models\EboekhoudenArticle;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
@@ -155,22 +156,24 @@ class Client
     /**
      * Get all relations from E-Boekhouden.nl.
      *
-     * @param string $keyword
-     * @param string $code
-     * @param int $id
+     * @param RelationFilter|null $filter
      * @return array
      * @throws EboekhoudenSoapException
      */
-    public function getRelations($keyword = '', $code = '', $id = 0): array
+    public function getRelations(RelationFilter $filter = null): array
     {
+        if (is_null($filter)) {
+            $filter = new RelationFilter();
+        }
+
         $result = $this->soapClient->__soapCall('GetRelaties', [
             'GetRelaties' => [
                 'SessionID' => $this->sessionId,
                 'SecurityCode2' => $this->secCode2,
                 'cFilter' => [
-                    'Trefwoord' => $keyword,
-                    'Code' => $code,
-                    'ID' => $id,
+                    'Trefwoord' => $filter->getKeyword(),
+                    'Code' => $filter->getCode(),
+                    'ID' => $filter->getId(),
                 ],
             ],
         ]);
