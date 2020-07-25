@@ -10,6 +10,7 @@ use IntVent\EBoekhouden\Filters\LedgerFilter;
 use IntVent\EBoekhouden\Filters\MutationFilter;
 use IntVent\EBoekhouden\Filters\RelationFilter;
 use IntVent\EBoekhouden\Filters\SaldoFilter;
+use IntVent\EBoekhouden\Models\EboekhoudenAdministration;
 use IntVent\EBoekhouden\Models\EboekhoudenArticle;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoiceList;
@@ -109,6 +110,36 @@ class Client
         $this->checkError('AutoLogin', $result);
 
         return sprintf('https://secure.e-boekhouden.nl/bh/inloggen.asp?LOGIN=1&t=%s&g=%s', $result->AutoLoginResult->Token, $this->secCode2);
+    }
+
+    /**
+     * List all connected Administrations in E-Boekhouden.nl.
+     *
+     * @return array
+     * @throws EboekhoudenSoapException
+     */
+    public function GetAdministrations(): array
+    {
+        $result = $this->soapClient->__soapCall('GetAdministraties', [
+            'GetAdministraties' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+            ],
+        ]);
+
+        $this->checkError('GetAdministraties', $result);
+
+        if (! isset($result->GetAdministratiesResult->Administraties->cAdministratie)) {
+            return [];
+        }
+
+        $administrations = $result->GetAdministratiesResult->Administraties->cAdministratie;
+
+        if (! is_array($administrations)) {
+            $administrations = [$administrations];
+        }
+
+        return array_map(fn ($item) => (new EboekhoudenAdministration((array)$item))->toArray(), $administrations);
     }
 
     /**
