@@ -4,7 +4,6 @@ namespace IntVent\EBoekhouden\Filters;
 
 class RelationFilter
 {
-
     protected int $id = 0;
     protected string $code = '';
     protected string $keyword = '';
