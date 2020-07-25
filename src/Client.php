@@ -5,6 +5,7 @@ namespace IntVent\EBoekhouden;
 use DateTime;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenSoapException;
 use IntVent\EBoekhouden\Filters\ArticleFilter;
+use IntVent\EBoekhouden\Filters\CostPlacementFilter;
 use IntVent\EBoekhouden\Filters\InvoiceFilter;
 use IntVent\EBoekhouden\Filters\LedgerFilter;
 use IntVent\EBoekhouden\Filters\MutationFilter;
@@ -12,6 +13,7 @@ use IntVent\EBoekhouden\Filters\RelationFilter;
 use IntVent\EBoekhouden\Filters\SaldoFilter;
 use IntVent\EBoekhouden\Models\EboekhoudenAdministration;
 use IntVent\EBoekhouden\Models\EboekhoudenArticle;
+use IntVent\EBoekhouden\Models\EboekhoudenCostPlacement;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoiceList;
 use IntVent\EBoekhouden\Models\EboekhoudenLedger;
@@ -140,6 +142,46 @@ class Client
         }
 
         return array_map(fn ($item) => (new EboekhoudenAdministration((array)$item))->toArray(), $administrations);
+    }
+
+    /**
+     * Get all KostenPlaatsen from E-Boekhouden.nl.
+     *
+     * @param CostPlacementFilter|null $filter
+     * @return array
+     * @throws EboekhoudenSoapException
+     */
+    public function GetCostPlacements(CostPlacementFilter $filter = null): array
+    {
+        if (is_null($filter)) {
+            $filter = new CostPlacementFilter();
+        }
+
+        $result = $this->soapClient->__soapCall('GetKostenplaatsen', [
+            'GetKostenplaatsen' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'cFilter' => [
+                    'KostenplaatsID' => $filter->getCostPlacementId(),
+                    'KostenplaatsParentID' => $filter->getCostPlacementParentId(),
+                    'Omschrijving' => $filter->getDescription(),
+                ],
+            ],
+        ]);
+
+        $this->checkError('GetKostenplaatsen', $result);
+
+        if (! isset($result->GetKostenplaatsenResult->Kostenplaatsen->cKostenplaats)) {
+            return [];
+        }
+
+        $costPlacements = $result->GetKostenplaatsenResult->Kostenplaatsen->cKostenplaats;
+
+        if (! is_array($costPlacements)) {
+            $costPlacements = [$costPlacements];
+        }
+
+        return array_map(fn ($item) => (new EboekhoudenCostPlacement((array)$item))->toArray(), $costPlacements);
     }
 
     /**
