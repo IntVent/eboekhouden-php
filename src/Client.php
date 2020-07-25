@@ -6,6 +6,7 @@ use DateTime;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenSoapException;
 use IntVent\EBoekhouden\Filters\ArticleFilter;
 use IntVent\EBoekhouden\Filters\InvoiceFilter;
+use IntVent\EBoekhouden\Filters\LedgerFilter;
 use IntVent\EBoekhouden\Filters\MutationFilter;
 use IntVent\EBoekhouden\Filters\SaldoFilter;
 use IntVent\EBoekhouden\Models\EboekhoudenArticle;
@@ -218,22 +219,24 @@ class Client
     /**
      * Get all ledgers from E-Boekhouden.nl.
      *
-     * @param string $id
-     * @param string $code
-     * @param string $category
+     * @param  LedgerFilter|null  $filter
      * @return array
      * @throws EboekhoudenSoapException
      */
-    public function getLedgers(string $id = '', string $code = '', string $category = ''): array
+    public function getLedgers(LedgerFilter $filter = null): array
     {
+        if (is_null($filter)) {
+            $filter = new LedgerFilter();
+        }
+
         $result = $this->soapClient->__soapCall('GetGrootboekrekeningen', [
             'GetGrootboekrekeningen' => [
                 'SessionID' => $this->sessionId,
                 'SecurityCode2' => $this->secCode2,
                 'cFilter' => [
-                    'ID' => $id,
-                    'Code' => $code,
-                    'Categorie' => $category,
+                    'ID' => $filter->getId(),
+                    'Code' => $filter->getCode(),
+                    'Categorie' => $filter->getCategory(),
                 ],
             ],
         ]);
