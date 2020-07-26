@@ -498,6 +498,27 @@ class Client
     }
 
     /**
+     * Update Ledger in E-Boekhouden.nl.
+     *
+     * @param EboekhoudenLedger $ledger
+     * @return EboekhoudenLedger
+     * @throws EboekhoudenSoapException
+     */
+    public function updateLedger(EboekhoudenLedger $ledger): EboekhoudenLedger
+    {
+        $result = $this->soapClient->__soapCall('UpdateGrootboekrekening', [
+            'UpdateGrootboekrekening' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'oGb' => $this->getOGb($ledger),
+            ],
+        ]);
+        $this->checkError('UpdateGrootboekrekening', $result);
+
+        return $ledger;
+    }
+
+    /**
      * Add new relation to E-Boekhouden.nl.
      *
      * @param EboekhoudenRelation $relation
