@@ -120,7 +120,7 @@ class Client
      * @return array
      * @throws EboekhoudenSoapException
      */
-    public function GetAdministrations(): array
+    public function getAdministrations(): array
     {
         $result = $this->soapClient->__soapCall('GetAdministraties', [
             'GetAdministraties' => [
@@ -151,7 +151,7 @@ class Client
      * @return array
      * @throws EboekhoudenSoapException
      */
-    public function GetCostPlacements(CostPlacementFilter $filter = null): array
+    public function getCostPlacements(CostPlacementFilter $filter = null): array
     {
         if (is_null($filter)) {
             $filter = new CostPlacementFilter();
@@ -447,7 +447,7 @@ class Client
             $mutations = [$mutations];
         }
 
-        return array_map(fn ($item) => new EboekhoudenMutation((array)$item), $mutations);
+        return array_map(fn ($item) => (new EboekhoudenMutation((array)$item))->toArray(), $mutations);
     }
 
     /**
@@ -684,6 +684,38 @@ class Client
             'Omschrijving' => $ledger->getDescription(),
             'Categorie' => $ledger->getCategory(),
             'Groep' => $ledger->getGroup(),
+        ];
+    }
+
+    /**
+     * @param EboekhoudenMutation $mutation
+     * @return array
+     */
+    private function getOMut(EboekhoudenMutation $mutation): array
+    {
+        $lines = array_map(fn ($line) => [
+            'BedragInvoer' => $line->getEntryAmount(),
+            'BedragExclBTW' => $line->getAmountExclVat(),
+            'BedragBTW' => $line->getVatAmount(),
+            'BedragInclBTW' => $line->getAmountInclVat(),
+            'BTWCode' => $line->getVatCode(),
+            'BTWPercentage' => $line->getVatPercentage(),
+            'TegenrekeningCode' => $line->getLedgerCode(),
+            'KostenplaatsID' => $line->getCostPlacementId(),
+        ], $mutation->getLines());
+
+        return [
+            'MutatieNr' => $mutation->getNumber(),
+            'Soort' => $mutation->getKind(),
+            'Datum' => $mutation->getDate(),
+            'Rekening' => $mutation->getLedgerCode(),
+            'RelatieCode' => $mutation->getRelationCode(),
+            'Factuurnummer' => $mutation->getInvoiceNumber(),
+            'Boekstuk' => $mutation->getJournal(),
+            'Omschrijving' => $mutation->getDescription(),
+            'Betalingstermijn' => $mutation->getPaymentTerm(),
+            'InExBTW' => $mutation->getInOrExVat(),
+            'MutatieRegels' => $lines,
         ];
     }
 }

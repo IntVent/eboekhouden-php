@@ -17,7 +17,9 @@ class EboekhoudenMutation implements Arrayable
     protected string $ledger_code = '';
     protected ?string $relation_code = null;
     protected ?string $invoice_number = null;
+    protected string $journal = '';
     protected string $description = '';
+    protected string $in_or_ex_vat = 'EX';
     protected ?int $payment_term = null;
     protected array $lines = [];
 
@@ -25,6 +27,7 @@ class EboekhoudenMutation implements Arrayable
      * EboekhoudenMutation constructor.
      * @param array|null $item
      * @throws EboekhoudenException
+     * @throws \Exception
      */
     public function __construct(array $item = null)
     {
@@ -36,7 +39,9 @@ class EboekhoudenMutation implements Arrayable
                 ->setLedgerCode($item['Rekening'])
                 ->setRelationCode($item['RelatieCode'])
                 ->setInvoiceNumber($item['Factuurnummer'])
+                ->setJournal($item['Boekstuk'])
                 ->setDescription($item['Omschrijving'])
+                ->setInOrExVat($item['InExBTW'])
                 ->setPaymentTerm($item['Betalingstermijn']);
 
             $lines = $item['MutatieRegels']->cMutatieListRegel;
@@ -169,6 +174,25 @@ class EboekhoudenMutation implements Arrayable
     /**
      * @return string
      */
+    public function getJournal(): string
+    {
+        return $this->journal;
+    }
+
+    /**
+     * @param string $journal
+     * @return EboekhoudenMutation
+     */
+    public function setJournal(string $journal): EboekhoudenMutation
+    {
+        $this->journal = $journal;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getDescription(): string
     {
         return $this->description;
@@ -181,6 +205,25 @@ class EboekhoudenMutation implements Arrayable
     public function setDescription(string $description): EboekhoudenMutation
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInOrExVat(): string
+    {
+        return $this->in_or_ex_vat;
+    }
+
+    /**
+     * @param string $in_or_ex_vat
+     * @return EboekhoudenMutation
+     */
+    public function setInOrExVat(string $in_or_ex_vat): EboekhoudenMutation
+    {
+        $this->in_or_ex_vat = $in_or_ex_vat;
 
         return $this;
     }
