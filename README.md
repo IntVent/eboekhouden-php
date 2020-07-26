@@ -15,7 +15,7 @@ You can install the package via composer:
 composer require intvent/eboekhouden-php
 ```
 
-## Usage
+## Usage (Examples)
 
 ``` php
 $username = 'username';
@@ -27,19 +27,19 @@ $client = new IntVent\Eboekhouden\Client($username, $sec_code_1, $sec_code2);
 // Get a SigleSignOnLink (AutoLogin)
 $autoLogin = $client->autoLogin();
 
-// Get the Articles
+// Get all Articles
 $articles = $client->getArticles();
 
-// Get the Relations
+// Get all Relations
 $relations = $client->getRelations();
 
-// Get the Mutations
+// Get all Mutations
 $mutations = $client->getMutations();
 
-// Get the Ledgers
+// Get all Ledgers
 $ledgers = $client->getLedgers();
 
-// Get the Invoices
+// Get all Invoices
 $invoices = $client->getInvoices();
 ```
 
