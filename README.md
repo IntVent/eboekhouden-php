@@ -1,9 +1,11 @@
-# A PHP framework agnostic package for E-boekhouden.nl
+# A PHP composer package for E-Boekhouden.nl
 
 ![Tests](https://github.com/intvent/eboekhouden-php/workflows/Tests/badge.svg) ![Psalm](https://github.com/intvent/eboekhouden-php/workflows/Psalm/badge.svg)
 
-With this package you can easily integrate E-boekhouden.nl within your PHP project.  
-If you wish to use this package and want to support future development. Please consider to [sponsor](https://github.com/sponsors/petericebear).  
+With this framework agnostic package you can easily integrate E-boekhouden.nl within any PHP project.  
+If you wish to use this package and want to support future development. Please consider to [sponsor](https://github.com/sponsors/petericebear).
+
+View the original [SOAP documentation](https://secure.e-boekhouden.nl/handleiding/Documentatie_soap.pdf).   
 
 ## Installation
 
@@ -22,7 +24,7 @@ $sec_code_2 = 'sec_code_2';
 
 $client = new IntVent\Eboekhouden\Client($username, $sec_code_1, $sec_code2);
 
-// Get SigleSignOnLink (AutoLogin)
+// Get a SigleSignOnLink (AutoLogin)
 $autoLogin = $client->autoLogin();
 
 // Get the Articles
@@ -41,10 +43,17 @@ $ledgers = $client->getLedgers();
 $invoices = $client->getInvoices();
 ```
 
-## Testing
+## Testing & building
 
+To testing the package locally run:
 ``` bash
 composer test
+```
+
+Before publishing any changes you can run code formatting and PSALM.
+``` bash
+composer format
+composer psalm
 ```
 
 ## Changelog
