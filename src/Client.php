@@ -473,6 +473,31 @@ class Client
     }
 
     /**
+     * Add a Grootboekrekening to E-Boekhouden.nl.
+     *
+     * @param EboekhoudenLedger $ledger
+     * @return EboekhoudenLedger
+     * @throws EboekhoudenSoapException
+     * @throws Exceptions\EboekhoudenException
+     */
+    public function addLedger(EboekhoudenLedger $ledger): EboekhoudenLedger
+    {
+        $result = $this->soapClient->__soapCall('AddGrootboekrekening', [
+            'AddGrootboekrekening' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'oGb' => $this->getOGb($ledger),
+            ],
+        ]);
+
+        $this->checkError('AddGrootboekrekening', $result);
+
+        $ledger->setId((int)$result->AddGrootboekrekeningResult->Gb_ID);
+
+        return $ledger;
+    }
+
+    /**
      * Add new relation to E-Boekhouden.nl.
      *
      * @param EboekhoudenRelation $relation
@@ -617,6 +642,27 @@ class Client
             'Gb_ID' => $relation->getDefaultLedgerId(),
             'GeenEmail' => $relation->getReceiveNewsletter() ? 0 : 1,
             'NieuwsbriefgroepenCount' => 0,
+        ];
+    }
+
+    /**
+     * @param EboekhoudenLedger $ledger
+     * @return array
+     */
+    private function getOGb(EboekhoudenLedger $ledger): array
+    {
+        $id = $ledger->getId();
+
+        if (empty($id)) {
+            $id = 0;
+        }
+
+        return [
+            'ID' => $id,
+            'Code' => $ledger->getCode(),
+            'Omschrijving' => $ledger->getDescription(),
+            'Categorie' => $ledger->getCategory(),
+            'Groep' => $ledger->getGroup(),
         ];
     }
 }
