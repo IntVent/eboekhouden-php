@@ -707,7 +707,7 @@ class Client
         return [
             'MutatieNr' => $mutation->getNumber(),
             'Soort' => $mutation->getKind(),
-            'Datum' => $mutation->getDate(),
+            'Datum' => $mutation->getDate() ? $mutation->getDate()->format('Y-m-d') : null,
             'Rekening' => $mutation->getLedgerCode(),
             'RelatieCode' => $mutation->getRelationCode(),
             'Factuurnummer' => $mutation->getInvoiceNumber(),
@@ -717,5 +717,27 @@ class Client
             'InExBTW' => $mutation->getInOrExVat(),
             'MutatieRegels' => $lines,
         ];
+    }
+
+    /**
+     * Add a new mutation to E-boekhouden.nl
+     *
+     * @param EboekhoudenMutation $mutation
+     * @return int New mutation number
+     * @throws EboekhoudenSoapException
+     */
+    public function addMutation(EboekhoudenMutation $mutation): int
+    {
+        $result = $this->soapClient->__soapCall('AddMutatie', [
+            'AddMutatie' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'oMut' => $this->getOMut($mutation),
+            ],
+        ]);
+
+        $this->checkError('AddMutatie', $result);
+
+        return (int)$result->AddMutatieResult->Mutatienummer;
     }
 }
