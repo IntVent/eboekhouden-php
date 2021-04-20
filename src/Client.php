@@ -94,7 +94,7 @@ class Client
     }
 
     /**
-     * AutoLogin to E-boekhouden.nl
+     * AutoLogin to E-boekhouden.nl.
      *
      * @return string New invoice number
      * @throws EboekhoudenSoapException
@@ -265,7 +265,7 @@ class Client
     }
 
     /**
-     * Get all OutstandingPosts from E-boekhouden.nl
+     * Get all OutstandingPosts from E-boekhouden.nl.
      *
      * @param  string  $kind 'Debiteuren' or 'Crediteuren'
      * @return array
@@ -451,7 +451,7 @@ class Client
     }
 
     /**
-     * Add a new invoice to E-boekhouden.nl
+     * Add a new invoice to E-boekhouden.nl.
      *
      * @param EboekhoudenInvoice $invoice
      * @return string New invoice number
@@ -720,7 +720,7 @@ class Client
     }
 
     /**
-     * Add a new mutation to E-boekhouden.nl
+     * Add a new mutation to E-boekhouden.nl.
      *
      * @param EboekhoudenMutation $mutation
      * @return int New mutation number
@@ -739,5 +739,17 @@ class Client
         $this->checkError('AddMutatie', $result);
 
         return (int)$result->AddMutatieResult->Mutatienummer;
+    }
+    
+    /**
+     * Client destructor.
+     *
+     * @param string $sessionId
+     */
+    public function __destruct()
+    {
+        $this->soapClient->__soapCall('CloseSession', [
+            'SessionID' => $this->sessionId,
+        ]);
     }
 }
