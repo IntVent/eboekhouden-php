@@ -38,6 +38,43 @@ class EboekhoudenInvoice implements Arrayable
     protected array $lines = [];
 
     /**
+     * EboekhoudenInvoice constructor.
+     * @param array|null $item
+     * @throws EboekhoudenException
+     */
+    public function __construct(array $item = null)
+    {
+        if (! empty($item)) {
+            $this
+                ->setInvoiceNumber($item['Factuurnummer'])
+                ->setRelationCode($item['Relatiecode'])
+                ->setDate($item['Datum'])
+                ->setPaymentTerm($item['Betalingstermijn'])
+                ->setInvoiceTemplate($item['Factuursjabloon'])
+                ->setSendPerEmail($item['PerEmailVerzenden'])
+                ->setEmailSubject($item['EmailOnderwerp'])
+                ->setEmailMessage($item['EmailBericht'])
+                ->setEmailFromAddress($item['EmailVanAdres'])
+                ->setEmailFromName($item['EmailVanNaam'])
+                ->setAutomaticIncasso($item['AutomatischeIncasso'])
+                ->setIncassoIban($item['IncassoIBAN'])
+                ->setIncassoMandateKind($item['IncassoMachtigingSoort'])
+                ->setIncassoMandateId($item['IncassoMachtigingID'])
+                ->setIncassoMandateSignatureDate($item['IncassoMachtigingDatumOndertekening'])
+                ->setIncassoMandateFirst($item['IncassoMachtigingFirst'])
+                ->setIncassoAccountNumber($item['IncassoMachtigingNummer'])
+                ->setIncassoAccountHolder($item['IncassoTnv'])
+                ->setIncassoCity($item['IncassoPlaats'])
+                ->setIncassoDescriptionRow1($item['IncassoOmschrijvingRegel1'])
+                ->setIncassoDescriptionRow2($item['IncassoOmschrijvingRegel2'])
+                ->setIncassoDescriptionRow3($item['IncassoOmschrijvingRegel3'])
+                ->setProcessInLedger($item['InBoekhoudingPlaatsen'])
+                ->setMutationDescription($item['BoekhoudmutatieOmschrijving'])
+                ->setLines($item['Regels']);
+        }
+    }
+
+    /**
      * @return string
      */
     public function getInvoiceNumber(): string
