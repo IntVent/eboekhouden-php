@@ -350,7 +350,7 @@ class Client
                     'GbCode' => $filter->getLedgerCode(),
                     'KostenPlaatsId' => $filter->getCostPlacementId(),
                     'DatumVan' => $dateFrom->format('Y-m-d'),
-                    'DatumTm' => $dateTo->format('Y-m-d'),
+                    'DatumTot' => $dateTo->format('Y-m-d'),
                 ],
             ],
         ]);
