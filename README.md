@@ -43,6 +43,9 @@ $ledgers = $client->getLedgers();
 
 // Get all Invoices
 $invoices = $client->getInvoices();
+
+// Get all Balances
+$balances = $client->getBalances();
 ```
 
 ## Testing & building
