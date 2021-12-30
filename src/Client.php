@@ -10,9 +10,11 @@ use IntVent\EBoekhouden\Filters\InvoiceFilter;
 use IntVent\EBoekhouden\Filters\LedgerFilter;
 use IntVent\EBoekhouden\Filters\MutationFilter;
 use IntVent\EBoekhouden\Filters\RelationFilter;
+use IntVent\EBoekhouden\Filters\SaldiFilter;
 use IntVent\EBoekhouden\Filters\SaldoFilter;
 use IntVent\EBoekhouden\Models\EboekhoudenAdministration;
 use IntVent\EBoekhouden\Models\EboekhoudenArticle;
+use IntVent\EBoekhouden\Models\EboekhoudenBalance;
 use IntVent\EBoekhouden\Models\EboekhoudenCostPlacement;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoiceList;
@@ -358,6 +360,48 @@ class Client
         $this->checkError('GetSaldo', $result);
 
         return $result->GetSaldoResult->Saldo;
+    }
+
+    /**
+     * @param  SaldiFilter|null  $filter
+     * @return float
+     * @throws EboekhoudenSoapException
+     */
+    public function getSaldi(SaldiFilter $filter = null): array
+    {
+        if (is_null($filter)) {
+            $filter = new SaldiFilter();
+        }
+
+        $dateFrom = $filter->getDateFrom() ?? new DateTime('1970-01-01 00:00:00');
+        $dateTo = $filter->getDateTo() ?? new DateTime('2050-12-31 23:59:59');
+
+        $result = $this->soapClient->__soapCall('GetSaldi', [
+            'GetSaldi' => [
+                'SessionID' => $this->sessionId,
+                'SecurityCode2' => $this->secCode2,
+                'cFilter' => [
+                    'KostenPlaatsId' => $filter->getCostPlacementId(),
+                    'DatumVan' => $dateFrom->format('Y-m-d'),
+                    'DatumTot' => $dateTo->format('Y-m-d'),
+                    'Category' => $filter->getCategory(),
+                ],
+            ],
+        ]);
+
+        $this->checkError('GetSaldi', $result);
+
+        if (! isset($result->GetSaldiResult->Saldi->cSaldo)) {
+            return [];
+        }
+
+        $balances = $result->GetSaldiResult->Saldi->cSaldo;
+
+        if (! is_array($balances)) {
+            $balances = [$balances];
+        }
+
+        return array_map(fn ($item) => (new EboekhoudenBalance((array)$item))->toArray(), $balances);
     }
 
     /**
@@ -740,7 +784,7 @@ class Client
 
         return (int)$result->AddMutatieResult->Mutatienummer;
     }
-    
+
     /**
      * Client destructor.
      *
