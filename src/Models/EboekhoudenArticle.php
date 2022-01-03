@@ -207,7 +207,6 @@ class EboekhoudenArticle implements Arrayable
         return $this;
     }
 
-
     /**
      * @return float
      */

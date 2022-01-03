@@ -8,7 +8,6 @@ class RelationFilter
     protected string $code = '';
     protected string $keyword = '';
 
-
     /**
      * @return int
      */
