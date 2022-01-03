@@ -95,7 +95,8 @@ class EboekhoudenBalance implements Arrayable
     }
 
     /**
-     * @param string $balance
+     * @param float $balance
+     *
      * @return EboekhoudenBalance
      */
     public function setBalance(float $balance): EboekhoudenBalance
