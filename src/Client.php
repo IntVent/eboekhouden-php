@@ -363,8 +363,10 @@ class Client
     }
 
     /**
-     * @param  SaldiFilter|null  $filter
-     * @return float
+     * @param SaldiFilter|null  $filter
+     *
+     * @return array
+     *
      * @throws EboekhoudenSoapException
      */
     public function getSaldi(SaldiFilter $filter = null): array
