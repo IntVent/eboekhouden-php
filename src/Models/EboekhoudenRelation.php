@@ -48,6 +48,7 @@ class EboekhoudenRelation implements Arrayable
         if (! empty($item)) {
             $this
                 ->setId($item['ID'])
+                ->setRelationType($item['BP'])
                 ->setAddDate(new DateTime($item['AddDatum']))
                 ->setCode($item['Code'])
                 ->setCompany($item['Bedrijf'])
