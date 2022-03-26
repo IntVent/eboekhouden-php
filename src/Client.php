@@ -684,7 +684,7 @@ class Client
             'Land2' => $relation->getPostalCountry(),
             'Telefoon' => $relation->getPhone(),
             'GSM' => $relation->getCellPhone(),
-            'FAX' => '',
+            'FAX' => $relation->getFax(),
             'Email' => $relation->getEmail(),
             'Site' => $relation->getSite(),
             'Notitie' => $relation->getNotes(),
@@ -695,21 +695,11 @@ class Client
             'IBAN' => $relation->getIBAN(),
             'BIC' => $relation->getBIC(),
             'BP' => $relation->getRelationType(),
-            'Def1' => '',
-            'Def2' => '',
-            'Def3' => '',
-            'Def4' => '',
-            'Def5' => '',
-            'Def6' => '',
-            'Def7' => '',
-            'Def8' => '',
-            'Def9' => '',
-            'Def10' => '',
-            'LA' => '',
+            'LA' => $relation->getLa(),
             'Gb_ID' => $relation->getDefaultLedgerId(),
             'GeenEmail' => $relation->getReceiveNewsletter() ? 0 : 1,
             'NieuwsbriefgroepenCount' => 0,
-        ];
+        ] + $relation->getCustomFields();
     }
 
     /**

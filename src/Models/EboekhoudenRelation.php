@@ -13,6 +13,7 @@ class EboekhoudenRelation implements Arrayable
 
     protected ?int $id = null;
     protected string $relation_type = 'B';
+    protected string $la = '0';
     protected ?DateTime $add_date = null;
     protected string $code = '';
     protected string $company = '';
@@ -26,6 +27,7 @@ class EboekhoudenRelation implements Arrayable
     protected string $postal_zipcode = '';
     protected string $postal_city = '';
     protected string $postal_country = '';
+    protected string $fax = '';
     protected string $phone = '';
     protected string $cell_phone = '';
     protected string $email = '';
@@ -37,6 +39,7 @@ class EboekhoudenRelation implements Arrayable
     protected string $bic = '';
     protected int $default_ledger_id = 0;
     protected bool $receive_newsletter = true;
+    protected array $custom_fields = [];
 
     /**
      * EboekhoudenRelation constructor.
@@ -48,6 +51,8 @@ class EboekhoudenRelation implements Arrayable
         if (! empty($item)) {
             $this
                 ->setId($item['ID'])
+                ->setRelationType($item['BP'] ?? '')
+                ->setLa($item['LA'] ?? '')
                 ->setAddDate(new DateTime($item['AddDatum']))
                 ->setCode($item['Code'])
                 ->setCompany($item['Bedrijf'])
@@ -61,13 +66,16 @@ class EboekhoudenRelation implements Arrayable
                 ->setPostalZipcode($item['Postcode2'])
                 ->setPostalCity($item['Plaats2'])
                 ->setPostalCountry($item['Land2'])
+                ->setFax($item['FAX'] ?? '')
                 ->setPhone($item['Telefoon'])
                 ->setCellPhone($item['GSM'])
                 ->setEmail($item['Email'])
                 ->setSite($item['Site'])
                 ->setNotes($item['Notitie'])
+                ->setIBAN($item['IBAN'] ?? '')
                 ->setVatNumber($item['BTWNummer'])
                 ->setReceiveNewsletter(! ! ! $item['GeenEmail'])
+                ->setCustomFields($item)
             ;
         }
     }
@@ -109,8 +117,31 @@ class EboekhoudenRelation implements Arrayable
      */
     public function setRelationType(string $relation_type): EboekhoudenRelation
     {
-        $this->relation_type = $relation_type;
+        if ($relation_type) {
+            $this->relation_type = $relation_type;
+        }
+  
+        return $this;
+    }
 
+    /**
+     * @return string
+     */
+    public function getLa(): string
+    {
+        return $this->la;
+    }
+
+    /**
+     * @param string $la
+     * @return EboekhoudenRelation
+     */
+    public function setLa(string $la): EboekhoudenRelation
+    {
+        if ($la) {
+            $this->la = $la;
+        }
+        
         return $this;
     }
 
@@ -381,6 +412,25 @@ class EboekhoudenRelation implements Arrayable
     /**
      * @return string
      */
+    public function getFax(): string
+    {
+        return $this->fax;
+    }
+
+    /**
+     * @param string $fax
+     * @return EboekhoudenRelation
+     */
+    public function setFax(string $fax): EboekhoudenRelation
+    {
+        $this->fax = $fax;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getPhone(): string
     {
         return $this->phone;
@@ -599,6 +649,31 @@ class EboekhoudenRelation implements Arrayable
     public function setReceiveNewsletter(bool $receive_newsletter): EboekhoudenRelation
     {
         $this->receive_newsletter = $receive_newsletter;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomFields(): array
+    {
+        return $this->custom_fields;
+    }
+
+    /**
+     * @param array $item
+     * @return EboekhoudenRelation
+     */
+    public function setCustomFields(array $item): EboekhoudenRelation
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $field = $item["Def$i"] ?? false;
+
+            if ($field !== false) {
+                $this->custom_fields["Def$i"] = $field;
+            }
+        }
 
         return $this;
     }
