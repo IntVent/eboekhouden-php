@@ -5,12 +5,9 @@ namespace IntVent\EBoekhouden\Models;
 use DateTime;
 use IntVent\EBoekhouden\Contracts\Arrayable;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
-use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
 
 class EboekhoudenRelation implements Arrayable
 {
-    use ProtectedFieldsToArrayTrait;
-
     protected ?int $id = null;
     protected string $relation_type = 'B';
     protected string $la = '0';
@@ -78,6 +75,23 @@ class EboekhoudenRelation implements Arrayable
                 ->setCustomFields($item)
             ;
         }
+    }
+
+    public function toArray()
+    {
+        $return = get_object_vars($this);
+        foreach ($return as $key => $value) {
+            if ($key === 'custom_fields') {
+                $return[$key] = $value;
+            } elseif (is_array($value)) {
+                $return[$key] = array_map(
+                    fn ($item): array => $item->toArray(),
+                    $value
+                );
+            }
+        }
+
+        return $return;
     }
 
     /**
