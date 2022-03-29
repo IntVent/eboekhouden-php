@@ -69,7 +69,7 @@ class EboekhoudenRelation implements Arrayable
                 ->setEmail($item['Email'])
                 ->setSite($item['Site'])
                 ->setNotes($item['Notitie'])
-                ->setIBAN($item['IBAN'] ?? '')
+                ->setIBAN($item['IBAN'] ?? null)
                 ->setVatNumber($item['BTWNummer'])
                 ->setReceiveNewsletter(! ! ! $item['GeenEmail'])
                 ->setCustomFields($item)
@@ -603,9 +603,11 @@ class EboekhoudenRelation implements Arrayable
      * @param string $iban
      * @return EboekhoudenRelation
      */
-    public function setIBAN(string $iban): EboekhoudenRelation
+    public function setIBAN(?string $iban): EboekhoudenRelation
     {
-        $this->iban = $iban;
+        if ($iban !== null) {
+            $this->iban = $iban;
+        }
 
         return $this;
     }
