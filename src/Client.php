@@ -667,7 +667,7 @@ class Client
             $id = 0;
         }
 
-        return [
+        return array_map(fn ($v) => $v !== null, [
             'ID' => $id,
             'AddDatum' => ($relation->getAddDate() ?? new DateTime())->format('Y-m-d'),
             'Code' => $relation->getCode(),
@@ -699,7 +699,7 @@ class Client
             'Gb_ID' => $relation->getDefaultLedgerId(),
             'GeenEmail' => $relation->getReceiveNewsletter() ? 0 : 1,
             'NieuwsbriefgroepenCount' => 0,
-        ] + $relation->getCustomFields();
+        ] + $relation->getCustomFields());
     }
 
     /**
