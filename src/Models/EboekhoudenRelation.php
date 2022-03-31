@@ -34,7 +34,7 @@ class EboekhoudenRelation implements Arrayable
     protected ?string $salutation = null;
     protected ?string $iban = null;
     protected ?string $bic = null;
-    protected ?int $default_ledger_id = null;
+    protected int $default_ledger_id = 0;
     protected bool $receive_newsletter = true;
     protected array $custom_fields = [];
 
@@ -71,6 +71,7 @@ class EboekhoudenRelation implements Arrayable
                 ->setNotes($item['Notitie'] ?? null)
                 ->setIBAN($item['IBAN'] ?? null)
                 ->setVatNumber($item['BTWNummer'] ?? null)
+                ->setDefaultLedgerId($item['GB_ID'] ?? null)
                 ->setReceiveNewsletter(! ! ! $item['GeenEmail'])
                 ->setCustomFields($item)
             ;
@@ -643,7 +644,7 @@ class EboekhoudenRelation implements Arrayable
      */
     public function setDefaultLedgerId(?int $default_ledger_id): EboekhoudenRelation
     {
-        $this->default_ledger_id = $default_ledger_id;
+        $this->default_ledger_id = (int) $default_ledger_id;
 
         return $this;
     }

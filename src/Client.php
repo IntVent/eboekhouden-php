@@ -696,7 +696,7 @@ class Client
             'BIC' => $relation->getBIC(),
             'BP' => $relation->getRelationType(),
             'LA' => $relation->getLa(),
-            'Gb_ID' => $relation->getDefaultLedgerId(),
+            'GB_ID' => $relation->getDefaultLedgerId(),
             'GeenEmail' => $relation->getReceiveNewsletter() ? 0 : 1,
             'NieuwsbriefgroepenCount' => 0,
         ] + $relation->getCustomFields(), fn ($v) => $v !== null);
