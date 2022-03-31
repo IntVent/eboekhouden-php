@@ -630,9 +630,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getDefaultLedgerId(): int
+    public function getDefaultLedgerId(): ?int
     {
         return $this->default_ledger_id;
     }
