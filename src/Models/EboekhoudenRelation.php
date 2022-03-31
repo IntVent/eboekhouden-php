@@ -219,9 +219,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getContact(): string
+    public function getContact(): ?string
     {
         return $this->contact;
     }
@@ -261,9 +261,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -282,9 +282,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getZipcode(): string
+    public function getZipcode(): ?string
     {
         return $this->zipcode;
     }
@@ -304,9 +304,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -326,9 +326,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
@@ -348,9 +348,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalAddress(): string
+    public function getPostalAddress(): ?string
     {
         return $this->postal_address;
     }
@@ -367,9 +367,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalZipcode(): string
+    public function getPostalZipcode(): ?string
     {
         return $this->postal_zipcode;
     }
@@ -386,9 +386,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalCity(): string
+    public function getPostalCity(): ?string
     {
         return $this->postal_city;
     }
@@ -405,9 +405,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalCountry(): string
+    public function getPostalCountry(): ?string
     {
         return $this->postal_country;
     }
@@ -424,9 +424,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getFax(): string
+    public function getFax(): ?string
     {
         return $this->fax;
     }
@@ -443,9 +443,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhone(): string
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -462,9 +462,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCellPhone(): string
+    public function getCellPhone(): ?string
     {
         return $this->cell_phone;
     }
@@ -481,9 +481,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -508,9 +508,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSite(): string
+    public function getSite(): ?string
     {
         return $this->site;
     }
@@ -535,9 +535,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNotes(): string
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
@@ -554,9 +554,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getVatNumber(): string
+    public function getVatNumber(): ?string
     {
         return $this->vat_number;
     }
@@ -573,9 +573,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSalutation(): string
+    public function getSalutation(): ?string
     {
         return $this->salutation;
     }
@@ -592,9 +592,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIBAN(): string
+    public function getIBAN(): ?string
     {
         return $this->iban;
     }
@@ -611,9 +611,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getBIC(): string
+    public function getBIC(): ?string
     {
         return $this->bic;
     }
