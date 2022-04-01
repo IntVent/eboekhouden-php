@@ -3,10 +3,9 @@
 namespace IntVent\EBoekhouden\Models;
 
 use DateTime;
-use IntVent\EBoekhouden\Contracts\Arrayable;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
 
-class EboekhoudenRelation implements Arrayable
+class EboekhoudenRelation
 {
     protected ?int $id = null;
     protected string $relation_type = 'B';
@@ -15,7 +14,7 @@ class EboekhoudenRelation implements Arrayable
     protected string $code = '';
     protected string $company = '';
     protected ?string $contact = null;
-    protected string $gender = '';
+    protected ?string $gender = null;
     protected ?string $address = null;
     protected ?string $zipcode = null;
     protected ?string $city = null;
@@ -54,6 +53,7 @@ class EboekhoudenRelation implements Arrayable
                 ->setCode($item['Code'])
                 ->setCompany($item['Bedrijf'])
                 ->setContact($item['Contactpersoon'] ?? null)
+                ->setSalutation($item['Aanhef'] ?? null)
                 ->setGender($item['Geslacht'])
                 ->setAddress($item['Adres'] ?? null)
                 ->setZipcode($item['Postcode'] ?? null)
@@ -70,29 +70,13 @@ class EboekhoudenRelation implements Arrayable
                 ->setSite($item['Site'] ?? null)
                 ->setNotes($item['Notitie'] ?? null)
                 ->setIBAN($item['IBAN'] ?? null)
+                ->setBIC($item['BIC'] ?? null)
                 ->setVatNumber($item['BTWNummer'] ?? null)
-                ->setDefaultLedgerId($item['GB_ID'] ?? null)
+                ->setDefaultLedgerId($item['Gb_ID'] ?? null)
                 ->setReceiveNewsletter(! ! ! $item['GeenEmail'])
                 ->setCustomFields($item)
             ;
         }
-    }
-
-    public function toArray()
-    {
-        $return = get_object_vars($this);
-        foreach ($return as $key => $value) {
-            if ($key === 'custom_fields') {
-                $return[$key] = $value;
-            } elseif (is_array($value)) {
-                $return[$key] = array_map(
-                    fn ($item): array => $item->toArray(),
-                    $value
-                );
-            }
-        }
-
-        return $return;
     }
 
     /**
@@ -249,13 +233,13 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @param string $gender
+     * @param string|null $gender
      * @return EboekhoudenRelation
      */
     public function setGender(?string $gender): EboekhoudenRelation
     {
         if ($gender) {
-            $this->gender = $gender;
+            $this->gender = strtolower($gender);
         }
 
         return $this;

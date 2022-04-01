@@ -255,15 +255,16 @@ class Client
 
         $this->checkError('GetRelaties', $result);
         if (! isset($result->GetRelatiesResult->Relaties->cRelatie)) {
-            return  [];
+            return [];
         }
         $relations = $result->GetRelatiesResult->Relaties->cRelatie;
+
 
         if (! is_array($relations)) {
             $relations = [$relations];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenRelation((array)$item))->toArray(), $relations);
+        return array_map(fn ($item) => (new EboekhoudenRelation((array) $item)), $relations);
     }
 
     /**
@@ -696,7 +697,7 @@ class Client
             'BIC' => $relation->getBIC(),
             'BP' => $relation->getRelationType(),
             'LA' => $relation->getLa(),
-            'GB_ID' => $relation->getDefaultLedgerId(),
+            'Gb_ID' => $relation->getDefaultLedgerId(),
             'GeenEmail' => $relation->getReceiveNewsletter() ? 0 : 1,
             'NieuwsbriefgroepenCount' => 0,
         ] + $relation->getCustomFields(), fn ($v) => $v !== null);
