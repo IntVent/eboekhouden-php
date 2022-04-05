@@ -44,7 +44,7 @@ class EboekhoudenRelation
      */
     public function __construct(array $item = null)
     {
-        if (! empty($item)) {
+        if (!empty($item)) {
             $this
                 ->setId($item['ID'])
                 ->setRelationType($item['BP'] ?? '')
@@ -73,9 +73,8 @@ class EboekhoudenRelation
                 ->setBIC($item['BIC'] ?? null)
                 ->setVatNumber($item['BTWNummer'] ?? null)
                 ->setDefaultLedgerId($item['Gb_ID'] ?? null)
-                ->setReceiveNewsletter(! ! ! $item['GeenEmail'])
-                ->setCustomFields($item)
-            ;
+                ->setReceiveNewsletter(!!!$item['GeenEmail'])
+                ->setCustomFields($item);
         }
     }
 
@@ -225,9 +224,9 @@ class EboekhoudenRelation
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
@@ -324,7 +323,7 @@ class EboekhoudenRelation
      */
     public function setCountry(?string $country): EboekhoudenRelation
     {
-        if (! empty($country)) {
+        if (!empty($country)) {
             $country = ucfirst($country);
         }
         $this->country = $country;
@@ -483,7 +482,7 @@ class EboekhoudenRelation
             return $this;
         }
 
-        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $this;
         }
 
@@ -510,7 +509,7 @@ class EboekhoudenRelation
             return $this;
         }
 
-        if (! filter_var($site, FILTER_VALIDATE_URL)) {
+        if (!filter_var($site, FILTER_VALIDATE_URL)) {
             return $this;
         }
 
