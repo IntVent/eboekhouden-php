@@ -26,7 +26,7 @@ class EboekhoudenAdministration implements Arrayable
                 ->setCity($item['Plaats'])
                 ->setGuid($item['Guid'])
                 ->setStartBookyear($item['StartBoekjaar'])
-                ;
+            ;
         }
     }
 
