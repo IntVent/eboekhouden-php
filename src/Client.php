@@ -143,7 +143,7 @@ class Client
             $administrations = [$administrations];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenAdministration((array)$item))->toArray(), $administrations);
+        return array_map(fn ($item) => (new EboekhoudenAdministration((array)$item)), $administrations);
     }
 
     /**
@@ -183,7 +183,7 @@ class Client
             $costPlacements = [$costPlacements];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenCostPlacement((array)$item))->toArray(), $costPlacements);
+        return array_map(fn ($item) => (new EboekhoudenCostPlacement((array)$item)), $costPlacements);
     }
 
     /**
@@ -225,7 +225,7 @@ class Client
             $articles = [$articles];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenArticle((array)$item))->toArray(), $articles);
+        return array_map(fn ($item) => (new EboekhoudenArticle((array)$item)), $articles);
     }
 
     /**
@@ -292,7 +292,7 @@ class Client
             $outstandingPosts = [$outstandingPosts];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenOutstandingPost((array)$item))->toArray(), $outstandingPosts);
+        return array_map(fn ($item) => (new EboekhoudenOutstandingPost((array)$item)), $outstandingPosts);
     }
 
     /**
@@ -328,7 +328,7 @@ class Client
             $ledgers = [$ledgers];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenLedger((array)$item))->toArray(), $ledgers);
+        return array_map(fn ($item) => (new EboekhoudenLedger((array)$item)), $ledgers);
     }
 
     /**
@@ -404,7 +404,7 @@ class Client
             $balances = [$balances];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenBalance((array)$item))->toArray(), $balances);
+        return array_map(fn ($item) => (new EboekhoudenBalance((array)$item)), $balances);
     }
 
     /**
@@ -448,7 +448,7 @@ class Client
             $invoices = [$invoices];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenInvoiceList((array)$item))->toArray(), $invoices);
+        return array_map(fn ($item) => (new EboekhoudenInvoiceList((array)$item)), $invoices);
     }
 
     /**
@@ -494,7 +494,7 @@ class Client
             $mutations = [$mutations];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenMutation((array)$item))->toArray(), $mutations);
+        return array_map(fn ($item) => (new EboekhoudenMutation((array)$item)), $mutations);
     }
 
     /**
