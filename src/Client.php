@@ -255,15 +255,16 @@ class Client
 
         $this->checkError('GetRelaties', $result);
         if (! isset($result->GetRelatiesResult->Relaties->cRelatie)) {
-            return  [];
+            return [];
         }
         $relations = $result->GetRelatiesResult->Relaties->cRelatie;
+
 
         if (! is_array($relations)) {
             $relations = [$relations];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenRelation((array)$item))->toArray(), $relations);
+        return array_map(fn ($item) => (new EboekhoudenRelation((array) $item)), $relations);
     }
 
     /**
@@ -667,7 +668,7 @@ class Client
             $id = 0;
         }
 
-        return [
+        return array_filter([
             'ID' => $id,
             'AddDatum' => ($relation->getAddDate() ?? new DateTime())->format('Y-m-d'),
             'Code' => $relation->getCode(),
@@ -684,32 +685,22 @@ class Client
             'Land2' => $relation->getPostalCountry(),
             'Telefoon' => $relation->getPhone(),
             'GSM' => $relation->getCellPhone(),
-            'FAX' => '',
+            'FAX' => $relation->getFax(),
             'Email' => $relation->getEmail(),
             'Site' => $relation->getSite(),
             'Notitie' => $relation->getNotes(),
-            'Bankrekening' => '',
-            'Girorekening' => '',
+            'Bankrekening' => null,
+            'Girorekening' => null,
             'BTWNummer' => $relation->getVatNumber(),
             'Aanhef' => $relation->getSalutation(),
             'IBAN' => $relation->getIBAN(),
             'BIC' => $relation->getBIC(),
             'BP' => $relation->getRelationType(),
-            'Def1' => '',
-            'Def2' => '',
-            'Def3' => '',
-            'Def4' => '',
-            'Def5' => '',
-            'Def6' => '',
-            'Def7' => '',
-            'Def8' => '',
-            'Def9' => '',
-            'Def10' => '',
-            'LA' => '',
+            'LA' => $relation->getLa(),
             'Gb_ID' => $relation->getDefaultLedgerId(),
             'GeenEmail' => $relation->getReceiveNewsletter() ? 0 : 1,
             'NieuwsbriefgroepenCount' => 0,
-        ];
+        ] + $relation->getCustomFields(), fn ($v) => $v !== null);
     }
 
     /**

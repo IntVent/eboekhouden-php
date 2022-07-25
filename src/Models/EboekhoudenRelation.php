@@ -3,40 +3,39 @@
 namespace IntVent\EBoekhouden\Models;
 
 use DateTime;
-use IntVent\EBoekhouden\Contracts\Arrayable;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
-use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
 
-class EboekhoudenRelation implements Arrayable
+class EboekhoudenRelation
 {
-    use ProtectedFieldsToArrayTrait;
-
     protected ?int $id = null;
     protected string $relation_type = 'B';
+    protected string $la = '0';
     protected ?DateTime $add_date = null;
     protected string $code = '';
     protected string $company = '';
-    protected string $contact = '';
-    protected string $gender = '';
-    protected string $address = '';
-    protected string $zipcode = '';
-    protected string $city = '';
-    protected string $country = '';
-    protected string $postal_address = '';
-    protected string $postal_zipcode = '';
-    protected string $postal_city = '';
-    protected string $postal_country = '';
-    protected string $phone = '';
-    protected string $cell_phone = '';
-    protected string $email = '';
-    protected string $site = '';
-    protected string $notes = '';
-    protected string $vat_number = '';
-    protected string $salutation = '';
-    protected string $iban = '';
-    protected string $bic = '';
+    protected ?string $contact = null;
+    protected ?string $gender = null;
+    protected ?string $address = null;
+    protected ?string $zipcode = null;
+    protected ?string $city = null;
+    protected ?string $country = '';
+    protected ?string $postal_address = '';
+    protected ?string $postal_zipcode = '';
+    protected ?string $postal_city = '';
+    protected ?string $postal_country = null;
+    protected ?string $fax = null;
+    protected ?string $phone = null;
+    protected ?string $cell_phone = null;
+    protected ?string $email = null;
+    protected ?string $site = null;
+    protected ?string $notes = null;
+    protected ?string $vat_number = null;
+    protected ?string $salutation = null;
+    protected ?string $iban = null;
+    protected ?string $bic = null;
     protected int $default_ledger_id = 0;
     protected bool $receive_newsletter = true;
+    protected array $custom_fields = [];
 
     /**
      * EboekhoudenRelation constructor.
@@ -45,30 +44,37 @@ class EboekhoudenRelation implements Arrayable
      */
     public function __construct(array $item = null)
     {
-        if (! empty($item)) {
+        if (!empty($item)) {
             $this
                 ->setId($item['ID'])
+                ->setRelationType($item['BP'] ?? '')
+                ->setLa($item['LA'] ?? '')
                 ->setAddDate(new DateTime($item['AddDatum']))
                 ->setCode($item['Code'])
                 ->setCompany($item['Bedrijf'])
-                ->setContact($item['Contactpersoon'])
+                ->setContact($item['Contactpersoon'] ?? null)
+                ->setSalutation($item['Aanhef'] ?? null)
                 ->setGender($item['Geslacht'])
-                ->setAddress($item['Adres'])
-                ->setZipcode($item['Postcode'])
-                ->setCity($item['Plaats'])
-                ->setCountry($item['Land'])
-                ->setPostalAddress($item['Adres2'])
-                ->setPostalZipcode($item['Postcode2'])
-                ->setPostalCity($item['Plaats2'])
-                ->setPostalCountry($item['Land2'])
-                ->setPhone($item['Telefoon'])
-                ->setCellPhone($item['GSM'])
-                ->setEmail($item['Email'])
-                ->setSite($item['Site'])
-                ->setNotes($item['Notitie'])
-                ->setVatNumber($item['BTWNummer'])
-                ->setReceiveNewsletter(! ! ! $item['GeenEmail'])
-            ;
+                ->setAddress($item['Adres'] ?? null)
+                ->setZipcode($item['Postcode'] ?? null)
+                ->setCity($item['Plaats'] ?? null)
+                ->setCountry($item['Land'] ?? null)
+                ->setPostalAddress($item['Adres2'] ?? null)
+                ->setPostalZipcode($item['Postcode2'] ?? null)
+                ->setPostalCity($item['Plaats2'] ?? null)
+                ->setPostalCountry($item['Land2'] ?? null)
+                ->setFax($item['FAX'] ?? null)
+                ->setPhone($item['Telefoon'] ?? null)
+                ->setCellPhone($item['GSM'] ?? null)
+                ->setEmail($item['Email'] ?? null)
+                ->setSite($item['Site'] ?? null)
+                ->setNotes($item['Notitie'] ?? null)
+                ->setIBAN($item['IBAN'] ?? null)
+                ->setBIC($item['BIC'] ?? null)
+                ->setVatNumber($item['BTWNummer'] ?? null)
+                ->setDefaultLedgerId($item['Gb_ID'] ?? null)
+                ->setReceiveNewsletter(!!!$item['GeenEmail'])
+                ->setCustomFields($item);
         }
     }
 
@@ -109,7 +115,30 @@ class EboekhoudenRelation implements Arrayable
      */
     public function setRelationType(string $relation_type): EboekhoudenRelation
     {
-        $this->relation_type = $relation_type;
+        if ($relation_type) {
+            $this->relation_type = $relation_type;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLa(): string
+    {
+        return $this->la;
+    }
+
+    /**
+     * @param string $la
+     * @return EboekhoudenRelation
+     */
+    public function setLa(string $la): EboekhoudenRelation
+    {
+        if ($la) {
+            $this->la = $la;
+        }
 
         return $this;
     }
@@ -147,7 +176,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $code
      * @return EboekhoudenRelation
      */
-    public function setCode(string $code): EboekhoudenRelation
+    public function setCode(?string $code): EboekhoudenRelation
     {
         $this->code = $code;
 
@@ -166,7 +195,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $company
      * @return EboekhoudenRelation
      */
-    public function setCompany(string $company): EboekhoudenRelation
+    public function setCompany(?string $company): EboekhoudenRelation
     {
         $this->company = $company;
 
@@ -174,9 +203,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getContact(): string
+    public function getContact(): ?string
     {
         return $this->contact;
     }
@@ -185,7 +214,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $contact
      * @return EboekhoudenRelation
      */
-    public function setContact(string $contact): EboekhoudenRelation
+    public function setContact(?string $contact): EboekhoudenRelation
     {
         if ($contact) {
             $this->contact = $contact;
@@ -195,30 +224,30 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getGender(): string
+    public function getGender(): ?string
     {
         return $this->gender;
     }
 
     /**
-     * @param string $gender
+     * @param string|null $gender
      * @return EboekhoudenRelation
      */
-    public function setGender(string $gender): EboekhoudenRelation
+    public function setGender(?string $gender): EboekhoudenRelation
     {
         if ($gender) {
-            $this->gender = $gender;
+            $this->gender = strtolower($gender);
         }
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->address;
     }
@@ -227,7 +256,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $address
      * @return EboekhoudenRelation
      */
-    public function setAddress(string $address): EboekhoudenRelation
+    public function setAddress(?string $address): EboekhoudenRelation
     {
         if ($address) {
             $this->address = $address;
@@ -237,9 +266,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getZipcode(): string
+    public function getZipcode(): ?string
     {
         return $this->zipcode;
     }
@@ -248,7 +277,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $zipcode
      * @return EboekhoudenRelation
      */
-    public function setZipcode(string $zipcode): EboekhoudenRelation
+    public function setZipcode(?string $zipcode): EboekhoudenRelation
     {
         if ($zipcode) {
             $zipcode = str_replace(' ', '', strtoupper($zipcode));
@@ -259,9 +288,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -270,7 +299,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $city
      * @return EboekhoudenRelation
      */
-    public function setCity(string $city): EboekhoudenRelation
+    public function setCity(?string $city): EboekhoudenRelation
     {
         if ($city) {
             $city = ucfirst($city);
@@ -281,9 +310,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCountry(): string
+    public function getCountry(): ?string
     {
         return $this->country;
     }
@@ -292,9 +321,9 @@ class EboekhoudenRelation implements Arrayable
      * @param string $country
      * @return EboekhoudenRelation
      */
-    public function setCountry(string $country): EboekhoudenRelation
+    public function setCountry(?string $country): EboekhoudenRelation
     {
-        if (! empty($country)) {
+        if (!empty($country)) {
             $country = ucfirst($country);
         }
         $this->country = $country;
@@ -303,9 +332,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalAddress(): string
+    public function getPostalAddress(): ?string
     {
         return $this->postal_address;
     }
@@ -314,7 +343,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $postal_address
      * @return EboekhoudenRelation
      */
-    public function setPostalAddress(string $postal_address): EboekhoudenRelation
+    public function setPostalAddress(?string $postal_address): EboekhoudenRelation
     {
         $this->postal_address = $postal_address;
 
@@ -322,9 +351,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalZipcode(): string
+    public function getPostalZipcode(): ?string
     {
         return $this->postal_zipcode;
     }
@@ -333,7 +362,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $postal_zipcode
      * @return EboekhoudenRelation
      */
-    public function setPostalZipcode(string $postal_zipcode): EboekhoudenRelation
+    public function setPostalZipcode(?string $postal_zipcode): EboekhoudenRelation
     {
         $this->postal_zipcode = $postal_zipcode;
 
@@ -341,9 +370,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalCity(): string
+    public function getPostalCity(): ?string
     {
         return $this->postal_city;
     }
@@ -352,7 +381,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $postal_city
      * @return EboekhoudenRelation
      */
-    public function setPostalCity(string $postal_city): EboekhoudenRelation
+    public function setPostalCity(?string $postal_city): EboekhoudenRelation
     {
         $this->postal_city = $postal_city;
 
@@ -360,9 +389,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPostalCountry(): string
+    public function getPostalCountry(): ?string
     {
         return $this->postal_country;
     }
@@ -371,7 +400,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $postal_country
      * @return EboekhoudenRelation
      */
-    public function setPostalCountry(string $postal_country): EboekhoudenRelation
+    public function setPostalCountry(?string $postal_country): EboekhoudenRelation
     {
         $this->postal_country = $postal_country;
 
@@ -379,9 +408,28 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPhone(): string
+    public function getFax(): ?string
+    {
+        return $this->fax;
+    }
+
+    /**
+     * @param string $fax
+     * @return EboekhoudenRelation
+     */
+    public function setFax(?string $fax): EboekhoudenRelation
+    {
+        $this->fax = $fax;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -390,7 +438,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $phone
      * @return EboekhoudenRelation
      */
-    public function setPhone(string $phone): EboekhoudenRelation
+    public function setPhone(?string $phone): EboekhoudenRelation
     {
         $this->phone = $phone;
 
@@ -398,9 +446,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCellPhone(): string
+    public function getCellPhone(): ?string
     {
         return $this->cell_phone;
     }
@@ -409,7 +457,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $cell_phone
      * @return EboekhoudenRelation
      */
-    public function setCellPhone(string $cell_phone): EboekhoudenRelation
+    public function setCellPhone(?string $cell_phone): EboekhoudenRelation
     {
         $this->cell_phone = $cell_phone;
 
@@ -417,9 +465,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -428,13 +476,13 @@ class EboekhoudenRelation implements Arrayable
      * @param string $email
      * @return EboekhoudenRelation
      */
-    public function setEmail(string $email): EboekhoudenRelation
+    public function setEmail(?string $email): EboekhoudenRelation
     {
         if (empty($email)) {
             return $this;
         }
 
-        if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return $this;
         }
 
@@ -444,9 +492,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSite(): string
+    public function getSite(): ?string
     {
         return $this->site;
     }
@@ -455,13 +503,13 @@ class EboekhoudenRelation implements Arrayable
      * @param string $site
      * @return EboekhoudenRelation
      */
-    public function setSite(string $site): EboekhoudenRelation
+    public function setSite(?string $site): EboekhoudenRelation
     {
         if (empty($site)) {
             return $this;
         }
 
-        if (! filter_var($site, FILTER_VALIDATE_URL)) {
+        if (!filter_var($site, FILTER_VALIDATE_URL)) {
             return $this;
         }
 
@@ -471,9 +519,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNotes(): string
+    public function getNotes(): ?string
     {
         return $this->notes;
     }
@@ -482,7 +530,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $notes
      * @return EboekhoudenRelation
      */
-    public function setNotes(string $notes): EboekhoudenRelation
+    public function setNotes(?string $notes): EboekhoudenRelation
     {
         $this->notes = $notes;
 
@@ -490,9 +538,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getVatNumber(): string
+    public function getVatNumber(): ?string
     {
         return $this->vat_number;
     }
@@ -501,7 +549,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $vat_number
      * @return EboekhoudenRelation
      */
-    public function setVatNumber(string $vat_number): EboekhoudenRelation
+    public function setVatNumber(?string $vat_number): EboekhoudenRelation
     {
         $this->vat_number = $vat_number;
 
@@ -509,9 +557,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSalutation(): string
+    public function getSalutation(): ?string
     {
         return $this->salutation;
     }
@@ -520,7 +568,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $salutation
      * @return EboekhoudenRelation
      */
-    public function setSalutation(string $salutation): EboekhoudenRelation
+    public function setSalutation(?string $salutation): EboekhoudenRelation
     {
         $this->salutation = $salutation;
 
@@ -528,9 +576,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getIBAN(): string
+    public function getIBAN(): ?string
     {
         return $this->iban;
     }
@@ -539,7 +587,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $iban
      * @return EboekhoudenRelation
      */
-    public function setIBAN(string $iban): EboekhoudenRelation
+    public function setIBAN(?string $iban): EboekhoudenRelation
     {
         $this->iban = $iban;
 
@@ -547,9 +595,9 @@ class EboekhoudenRelation implements Arrayable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getBIC(): string
+    public function getBIC(): ?string
     {
         return $this->bic;
     }
@@ -558,7 +606,7 @@ class EboekhoudenRelation implements Arrayable
      * @param string $bic
      * @return EboekhoudenRelation
      */
-    public function setBIC(string $bic): EboekhoudenRelation
+    public function setBIC(?string $bic): EboekhoudenRelation
     {
         $this->bic = $bic;
 
@@ -577,9 +625,9 @@ class EboekhoudenRelation implements Arrayable
      * @param int $default_ledger_id
      * @return EboekhoudenRelation
      */
-    public function setDefaultLedgerId(int $default_ledger_id): EboekhoudenRelation
+    public function setDefaultLedgerId(?int $default_ledger_id): EboekhoudenRelation
     {
-        $this->default_ledger_id = $default_ledger_id;
+        $this->default_ledger_id = (int) $default_ledger_id;
 
         return $this;
     }
@@ -596,9 +644,34 @@ class EboekhoudenRelation implements Arrayable
      * @param bool $receive_newsletter
      * @return EboekhoudenRelation
      */
-    public function setReceiveNewsletter(bool $receive_newsletter): EboekhoudenRelation
+    public function setReceiveNewsletter(?bool $receive_newsletter): EboekhoudenRelation
     {
         $this->receive_newsletter = $receive_newsletter;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getCustomFields(): array
+    {
+        return $this->custom_fields;
+    }
+
+    /**
+     * @param array $item
+     * @return EboekhoudenRelation
+     */
+    public function setCustomFields(array $item): EboekhoudenRelation
+    {
+        for ($i = 1; $i <= 10; $i++) {
+            $field = $item["Def$i"] ?? false;
+
+            if ($field !== false) {
+                $this->custom_fields["Def$i"] = $field;
+            }
+        }
 
         return $this;
     }
