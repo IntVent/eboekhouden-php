@@ -10,7 +10,7 @@ trait ProtectedFieldsToArrayTrait
         foreach ($return as $key => $value) {
             if (is_array($value)) {
                 $return[$key] = array_map(
-                    fn ($item): array => $item->toArray(),
+                    fn ($item): array => method_exists($item, 'toArray') ? $item->toArray() : $item,
                     $value
                 );
             }

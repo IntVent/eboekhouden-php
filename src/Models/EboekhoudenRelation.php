@@ -4,9 +4,12 @@ namespace IntVent\EBoekhouden\Models;
 
 use DateTime;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
+use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
 
 class EboekhoudenRelation
 {
+    use ProtectedFieldsToArrayTrait;
+
     protected ?int $id = null;
     protected string $relation_type = 'B';
     protected string $la = '0';
