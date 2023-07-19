@@ -3,10 +3,14 @@
 namespace IntVent\EBoekhouden\Models;
 
 use DateTime;
+use IntVent\EBoekhouden\Contracts\Arrayable;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenException;
+use IntVent\EBoekhouden\Traits\ProtectedFieldsToArrayTrait;
 
-class EboekhoudenRelation
+class EboekhoudenRelation implements Arrayable
 {
+    use ProtectedFieldsToArrayTrait;
+
     protected ?int $id = null;
     protected string $relation_type = 'B';
     protected string $la = '0';
