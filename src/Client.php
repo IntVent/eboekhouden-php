@@ -56,7 +56,7 @@ class Client
      *
      * @throws EboekhoudenSoapException
      */
-    protected function createSoapClient(): void
+    protected function createSoapClient()
     {
         if (! empty($this->soapClient) && ! empty($this->sessionId)) {
             return;
