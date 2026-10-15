@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-24.04, windows-latest]
         php: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
         dependency-version: [prefer-stable]
 
@@ -16,10 +16,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Cache dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.composer/cache/files
           key: dependencies-${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
