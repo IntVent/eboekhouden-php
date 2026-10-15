@@ -6,7 +6,7 @@ use DateTime;
 
 class SaldiFilter
 {
-    protected int $cost_placement_id = 0;
+    protected int $cost_center_id = 0;
     protected ?DateTime $date_from = null;
     protected ?DateTime $date_to = null;
     protected string $category = '';
@@ -14,18 +14,18 @@ class SaldiFilter
     /**
      * @return int
      */
-    public function getCostPlacementId(): int
+    public function getCostCenterId(): int
     {
-        return $this->cost_placement_id;
+        return $this->cost_center_id;
     }
 
     /**
-     * @param int $cost_placement_id
+     * @param int $cost_center_id
      * @return SaldiFilter
      */
-    public function setCostPlacementId(int $cost_placement_id): SaldiFilter
+    public function setCostCenterId(int $cost_center_id): SaldiFilter
     {
-        $this->cost_placement_id = $cost_placement_id;
+        $this->cost_center_id = $cost_center_id;
 
         return $this;
     }

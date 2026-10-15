@@ -5,7 +5,7 @@ namespace IntVent\EBoekhouden;
 use DateTime;
 use IntVent\EBoekhouden\Exceptions\EboekhoudenSoapException;
 use IntVent\EBoekhouden\Filters\ArticleFilter;
-use IntVent\EBoekhouden\Filters\CostPlacementFilter;
+use IntVent\EBoekhouden\Filters\CostCenterFilter;
 use IntVent\EBoekhouden\Filters\InvoiceFilter;
 use IntVent\EBoekhouden\Filters\LedgerFilter;
 use IntVent\EBoekhouden\Filters\MutationFilter;
@@ -15,7 +15,7 @@ use IntVent\EBoekhouden\Filters\SaldoFilter;
 use IntVent\EBoekhouden\Models\EboekhoudenAdministration;
 use IntVent\EBoekhouden\Models\EboekhoudenArticle;
 use IntVent\EBoekhouden\Models\EboekhoudenBalance;
-use IntVent\EBoekhouden\Models\EboekhoudenCostPlacement;
+use IntVent\EBoekhouden\Models\EboekhoudenCostCenter;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoice;
 use IntVent\EBoekhouden\Models\EboekhoudenInvoiceList;
 use IntVent\EBoekhouden\Models\EboekhoudenLedger;
@@ -149,14 +149,14 @@ class Client
     /**
      * Get all KostenPlaatsen from E-Boekhouden.nl.
      *
-     * @param CostPlacementFilter|null $filter
+     * @param CostCenterFilter|null $filter
      * @return array
      * @throws EboekhoudenSoapException
      */
-    public function getCostPlacements(CostPlacementFilter $filter = null): array
+    public function getCostCenters(?CostCenterFilter $filter = null): array
     {
         if (is_null($filter)) {
-            $filter = new CostPlacementFilter();
+            $filter = new CostCenterFilter();
         }
 
         $result = $this->soapClient->__soapCall('GetKostenplaatsen', [
@@ -164,8 +164,8 @@ class Client
                 'SessionID' => $this->sessionId,
                 'SecurityCode2' => $this->secCode2,
                 'cFilter' => [
-                    'KostenplaatsID' => $filter->getCostPlacementId(),
-                    'KostenplaatsParentID' => $filter->getCostPlacementParentId(),
+                    'KostenplaatsID' => $filter->getCostCenterId(),
+                    'KostenplaatsParentID' => $filter->getCostCenterParentId(),
                     'Omschrijving' => $filter->getDescription(),
                 ],
             ],
@@ -177,13 +177,13 @@ class Client
             return [];
         }
 
-        $costPlacements = $result->GetKostenplaatsenResult->Kostenplaatsen->cKostenplaats;
+        $costCenters = $result->GetKostenplaatsenResult->Kostenplaatsen->cKostenplaats;
 
-        if (! is_array($costPlacements)) {
-            $costPlacements = [$costPlacements];
+        if (! is_array($costCenters)) {
+            $costCenters = [$costCenters];
         }
 
-        return array_map(fn ($item) => (new EboekhoudenCostPlacement((array)$item)), $costPlacements);
+        return array_map(fn ($item) => (new EboekhoudenCostCenter((array)$item)), $costCenters);
     }
 
     /**
@@ -351,7 +351,7 @@ class Client
                 'SecurityCode2' => $this->secCode2,
                 'cFilter' => [
                     'GbCode' => $filter->getLedgerCode(),
-                    'KostenPlaatsId' => $filter->getCostPlacementId(),
+                    'KostenPlaatsId' => $filter->getCostCenterId(),
                     'DatumVan' => $dateFrom->format('Y-m-d'),
                     'DatumTot' => $dateTo->format('Y-m-d'),
                 ],
@@ -384,7 +384,7 @@ class Client
                 'SessionID' => $this->sessionId,
                 'SecurityCode2' => $this->secCode2,
                 'cFilter' => [
-                    'KostenPlaatsId' => $filter->getCostPlacementId(),
+                    'KostenPlaatsId' => $filter->getCostCenterId(),
                     'DatumVan' => $dateFrom->format('Y-m-d'),
                     'DatumTot' => $dateTo->format('Y-m-d'),
                     'Category' => $filter->getCategory(),
@@ -624,7 +624,7 @@ class Client
             'PrijsPerEenheid' => $line->getPrice(),
             'BTWCode' => $line->getTaxCode(),
             'TegenrekeningCode' => $line->getLedgerCode(),
-            'KostenplaatsID' => $line->getCostPlacementId(),
+            'KostenplaatsID' => $line->getCostCenterId(),
         ], $invoice->getLines());
 
         return [
@@ -738,7 +738,7 @@ class Client
             'BTWCode' => $line->getVatCode(),
             'BTWPercentage' => $line->getVatPercentage(),
             'TegenrekeningCode' => $line->getLedgerCode(),
-            'KostenplaatsID' => $line->getCostPlacementId(),
+            'KostenplaatsID' => $line->getCostCenterId(),
         ], $mutation->getLines());
 
         return [

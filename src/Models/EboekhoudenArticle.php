@@ -22,7 +22,7 @@ class EboekhoudenArticle implements Arrayable
     protected string $tax_code = '';
     protected string $ledger_code = '';
     protected float $tax_percentage = 0.0;
-    protected int $cost_placement_id = 0;
+    protected int $cost_center_id = 0;
     protected bool $active = false;
 
     /**
@@ -46,7 +46,7 @@ class EboekhoudenArticle implements Arrayable
                 ->setTaxCode($item['BTWCode'])
                 ->setLedgerCode($item['TegenrekeningCode'])
                 ->setTaxPercentage($item['BtwPercentage'])
-                ->setCostPlacementId($item['KostenplaatsID'])
+                ->setCostCenterId($item['KostenplaatsID'])
                 ->setActive($item['Actief']);
         }
     }
@@ -286,18 +286,18 @@ class EboekhoudenArticle implements Arrayable
     /**
      * @return int
      */
-    public function getCostPlacementId(): int
+    public function getCostCenterId(): int
     {
-        return $this->cost_placement_id;
+        return $this->cost_center_id;
     }
 
     /**
-     * @param int $cost_placement_id
+     * @param int $cost_center_id
      * @return EboekhoudenArticle
      */
-    public function setCostPlacementId(int $cost_placement_id): EboekhoudenArticle
+    public function setCostCenterId(int $cost_center_id): EboekhoudenArticle
     {
-        $this->cost_placement_id = $cost_placement_id;
+        $this->cost_center_id = $cost_center_id;
 
         return $this;
     }

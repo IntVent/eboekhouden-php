@@ -20,7 +20,7 @@ class EboekhoudenMutationLine implements Arrayable
     protected float $vat_percentage = 0.0;
     protected string $invoice_number = '';
     protected string $ledger_code = '';
-    protected int $cost_placement_id = 0;
+    protected int $cost_center_id = 0;
 
     /**
      * EboekhoudenMutationLine constructor.
@@ -38,7 +38,7 @@ class EboekhoudenMutationLine implements Arrayable
                 ->setVatPercentage($item['BTWPercentage'])
                 ->setInvoiceNumber($item['Factuurnummer'])
                 ->setLedgerCode($item['TegenrekeningCode'])
-                ->setCostPlacementId($item['KostenplaatsID']);
+                ->setCostCenterId($item['KostenplaatsID']);
         }
     }
 
@@ -201,18 +201,18 @@ class EboekhoudenMutationLine implements Arrayable
     /**
      * @return int
      */
-    public function getCostPlacementId(): int
+    public function getCostCenterId(): int
     {
-        return $this->cost_placement_id;
+        return $this->cost_center_id;
     }
 
     /**
-     * @param int $cost_placement_id
+     * @param int $cost_center_id
      * @return EboekhoudenMutationLine
      */
-    public function setCostPlacementId(int $cost_placement_id): EboekhoudenMutationLine
+    public function setCostCenterId(int $cost_center_id): EboekhoudenMutationLine
     {
-        $this->cost_placement_id = $cost_placement_id;
+        $this->cost_center_id = $cost_center_id;
 
         return $this;
     }

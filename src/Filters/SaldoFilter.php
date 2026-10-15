@@ -7,7 +7,7 @@ use DateTime;
 class SaldoFilter
 {
     protected string $ledger_code = '';
-    protected int $cost_placement_id = 0;
+    protected int $cost_center_id = 0;
     protected ?DateTime $date_from = null;
     protected ?DateTime $date_to = null;
 
@@ -33,18 +33,18 @@ class SaldoFilter
     /**
      * @return int
      */
-    public function getCostPlacementId(): int
+    public function getCostCenterId(): int
     {
-        return $this->cost_placement_id;
+        return $this->cost_center_id;
     }
 
     /**
-     * @param int $cost_placement_id
+     * @param int $cost_center_id
      * @return SaldoFilter
      */
-    public function setCostPlacementId(int $cost_placement_id): SaldoFilter
+    public function setCostCenterId(int $cost_center_id): SaldoFilter
     {
-        $this->cost_placement_id = $cost_placement_id;
+        $this->cost_center_id = $cost_center_id;
 
         return $this;
     }
